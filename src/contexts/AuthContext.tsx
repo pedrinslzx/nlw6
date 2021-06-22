@@ -1,13 +1,18 @@
-import { createContext, ReactNode, useCallback, useState } from 'react'
+import {
+  createContext,
+  ReactNode,
+  useCallback,
+  useEffect,
+  useState
+} from 'react'
 import { auth, firebase } from '../services/firebase'
 
 interface AuthUser {
   uid: string
-  name: string;
-  email: string;
-  photoURL: string;
+  name: string
+  email: string
+  photoURL: string
 }
-
 
 interface AuthContextType {
   loggedIn: boolean
@@ -25,19 +30,41 @@ export function formatUserInfo(user: firebase.User | null): AuthUser | null {
     uid: user.uid,
     name: user.displayName,
     email: user.email,
-    photoURL: user.photoURL,
+    photoURL: user.photoURL
   }
 }
 
 export function AuthProvider({ children }: { children: ReactNode }) {
-  const [user, setUser] = useState<AuthUser | null>(formatUserInfo(auth.currentUser))
+  const [user, setUser] = useState<AuthUser | null>(
+    formatUserInfo(auth.currentUser)
+  )
   const loggedIn = !!user
 
-  const signInWithGoogle = useCallback(async function signInWithGoogle() {
-    const GoogleAuthProvider = new firebase.auth.GoogleAuthProvider()
-    const userCredentials = await auth.signInWithPopup(GoogleAuthProvider)
-    setUser(formatUserInfo(userCredentials.user))
-  }, [setUser])
+  useEffect(() => {
+    auth.setPersistence(firebase.auth.Auth.Persistence.LOCAL)
+    const unsubscribe = auth.onAuthStateChanged(user => {
+      if (!user) return
+      if (!user.displayName || !user.email) {
+        throw new Error('Missing information from Google account')
+      }
+      setUser(formatUserInfo(user))
+    })
+
+    return () => unsubscribe()
+  }, [])
+
+  const signInWithGoogle = useCallback(
+    async function signInWithGoogle() {
+      const GoogleAuthProvider = new firebase.auth.GoogleAuthProvider()
+      const userCredentials = await auth.signInWithPopup(GoogleAuthProvider)
+      if (!userCredentials.user) return
+      if (!userCredentials.user.displayName || !userCredentials.user.email) {
+        throw new Error('Missing information from Google account')
+      }
+      setUser(formatUserInfo(userCredentials.user))
+    },
+    [setUser]
+  )
 
   async function logout() {
     await auth.signOut()

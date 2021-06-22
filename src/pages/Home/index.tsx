@@ -17,7 +17,7 @@ export function Home() {
       if (!auth.loggedIn) {
         await auth.signInWithGoogle()
       }
-      history.push("/rooms/new")
+      history.push('/rooms/new')
     } catch (err) {
       console.error(err)
     }
@@ -41,10 +41,7 @@ export function Home() {
           <div className={styles.separator}>Ou entre em uma sala</div>
 
           <form onSubmit={e => e.preventDefault()}>
-            <input
-              type="text"
-              placeholder="Digite o código da sala"
-            />
+            <input type="text" placeholder="Digite o código da sala" />
             <Button type="submit" alt="Entrar" icon={LoginIcon}>
               Entrar na sala
             </Button>

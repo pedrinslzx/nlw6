@@ -7,46 +7,49 @@
 }
 
 .aside {
-  background-color: #835AFD;
+  background-color: #835afd;
 
-  
   flex: 7;
 
-    display: flex;
-    justify-content: center;
-    flex-direction: column;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
 
-    padding: 120px 80px;
+  padding: 120px 80px;
 
-    color:#FFFFFF;
+  color: #ffffff;
 
+  > img {
+    height: auto;
+    max-width: 320px;
+  }
 
-    > img {
-      height: auto;
-      max-width: 320px;
-    }
+  > strong {
+    font-family: Poppins;
+    font-size: 36px;
+    font-weight: 700;
+    line-height: 42px;
 
-    > strong {
-      font-family: Poppins;
-      font-size: 36px;
-      font-weight: 700;
-      line-height: 42px;
+    max-width: 440px;
 
-      max-width: 440px;
+    margin-top: 16px;
+  }
 
-      margin-top: 16px;
-    }
+  > p {
+    margin-top: 16px;
 
-    > p {
-      margin-top: 16px;
+    font-size: 24px;
+    line-height: 32px;
+    font-weight: 400;
+    max-width: 440px;
 
-      font-size: 24px;
-      line-height: 32px;
-      font-weight: 400;
-      max-width: 440px;
+    color: #f8f8f8;
+  }
 
-      color: #f8f8f8;
-    }
+  @media (max-width: 800px) {
+    display: none;
+    visibility: hidden;
+  }
 }
 
 .main {
@@ -70,12 +73,13 @@
   max-width: 320px;
 
   > img {
-      align-self: center;
-      margin-bottom: 32px;
+    align-self: center;
+    margin-bottom: 32px;
   }
 
   form {
-    input, button {
+    input,
+    button {
       width: 100%;
     }
 
@@ -86,9 +90,9 @@
 
       background-color: #fff;
 
-      border: 1px solid #A8A8B3;
+      border: 1px solid #a8a8b3;
     }
-    
+
     button {
       margin-top: 16px;
     }
@@ -103,16 +107,17 @@
   display: flex;
   align-items: center;
 
-  &::before, &::after {
+  &::before,
+  &::after {
     content: '';
     flex: 1;
     height: 1px;
     background-color: #a8a8a8;
   }
-  &::before{
+  &::before {
     margin-right: 16px;
   }
-  &::after{
+  &::after {
     margin-left: 16px;
   }
 }
@@ -123,7 +128,7 @@
   margin-top: 16px;
 
   a {
-    color: #E559F9;
+    color: #e559f9;
   }
 }
 
