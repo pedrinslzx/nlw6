@@ -1,10 +1,21 @@
-import { BrowserRouter, Switch, Route } from 'react-router-dom'
+import { useEffect } from 'react'
+import { BrowserRouter, Switch, Route, useHistory } from 'react-router-dom'
 import { AuthProvider } from './contexts/AuthContext'
 
 import { Home } from './pages/Home'
 import { NewRoom } from './pages/NewRoom'
+import { analytics } from './services/firebase'
 
 function App() {
+  const history = useHistory()
+
+  useEffect(() => {
+    const unsubscribe = history.listen((location) => {
+      analytics.setCurrentScreen(location.pathname)
+    })
+    return () => unsubscribe()
+  })
+
   return (
     <BrowserRouter>
       <AuthProvider>
