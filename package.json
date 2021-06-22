@@ -4,32 +4,32 @@
   "private": true,
   "dependencies": {
     "firebase": "^8.6.8",
+    "node-sass": "~5.0.0",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
+    "react-router-dom": "^5.2.0",
     "react-scripts": "4.0.3",
-    "typescript": "^4.1.2",
     "web-vitals": "^1.0.1"
   },
   "devDependencies": {
+    "typescript": "^4.1.6",
+    "@testing-library/dom": ">=7.21.4",
     "@testing-library/jest-dom": "^5.11.4",
     "@testing-library/react": "^11.1.0",
     "@testing-library/user-event": "^12.1.10",
     "@types/jest": "^26.0.15",
     "@types/node": "^12.0.0",
     "@types/react": "^17.0.0",
-    "@types/react-dom": "^17.0.0"
+    "@types/react-dom": "^17.0.0",
+    "@types/react-router-dom": "^5.1.7",
+    "prettier": "^2.3.1"
   },
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
-  },
-  "eslintConfig": {
-    "extends": [
-      "react-app",
-      "react-app/jest"
-    ]
+    "eject": "react-scripts eject",
+    "lint": "eslint --fix src/**/*.{ts,tsx} && prettier --write {public,src}/**/*.{html,scss,json,ts,tsx}"
   },
   "browserslist": {
     "production": [
