@@ -1,12 +1,8 @@
-import React from 'react';
+import { Home } from './pages/Home';
 
 function App() {
   return (
-    <div>
-      <h1>
-        Let Me Ask
-      </h1>
-    </div>
+    <Home />
   );
 }
 

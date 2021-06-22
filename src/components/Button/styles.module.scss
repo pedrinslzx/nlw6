@@ -1,0 +1,36 @@
+.container {
+  height: 50px;
+  border-radius: 8px;
+  padding: 0 16px;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  
+  font-size: 16px;
+line-height: 18.75px;
+
+font-weight: 500;
+
+ 
+color: #fefefe;
+background-color: #835AFD;
+  
+  border: none; 
+  cursor: pointer;
+
+  transition: filter 300ms;
+
+  > img {
+    margin-right: 8px;
+  }
+
+  &:not(:disabled):hover {
+    filter: brightness(0.9);
+  }
+
+  &:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+}

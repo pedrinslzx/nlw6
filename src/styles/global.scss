@@ -1,0 +1,21 @@
+:root {
+  -webkit-font-smoothing: antialiased;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body, input, textarea, button {
+  font: 400 16px Roboto, sans-serif;
+}
+
+body, #root {
+  width: 100vw; 
+  min-height: 100vh;
+
+  background-color: #f8f8f8;
+  color: #29292e;
+}
