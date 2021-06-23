@@ -49,6 +49,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         toast('Estão faltando algumas infos da sua conta', { type: 'error' })
         return
       }
+      toast(`Seja bem-vindo(a), ${user.displayName}`, { type: 'info', autoClose: 2000, closeOnClick: false })
       setUser(formatUserInfo(user))
     })
 
