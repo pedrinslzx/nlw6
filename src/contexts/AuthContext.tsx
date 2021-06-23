@@ -5,6 +5,7 @@ import {
   useEffect,
   useState
 } from 'react'
+import { toast } from 'react-toastify'
 import { auth, firebase } from '../services/firebase'
 
 interface AuthUser {
@@ -45,7 +46,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     const unsubscribe = auth.onAuthStateChanged(user => {
       if (!user) return
       if (!user.displayName || !user.email) {
-        throw new Error('Missing information from Google account')
+        toast('Estão faltando algumas infos da sua conta', { type: 'error' })
+        return
       }
       setUser(formatUserInfo(user))
     })
@@ -59,7 +61,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       const userCredentials = await auth.signInWithPopup(GoogleAuthProvider)
       if (!userCredentials.user) return
       if (!userCredentials.user.displayName || !userCredentials.user.email) {
-        throw new Error('Missing information from Google account')
+        toast('Estão faltando algumas infos da sua conta', { type: 'error' })
+        return
       }
       setUser(formatUserInfo(userCredentials.user))
     },

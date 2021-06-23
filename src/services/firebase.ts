@@ -20,4 +20,13 @@ const auth = firebase.auth()
 const database = firebase.database()
 const analytics = firebase.analytics()
 
+export interface RoomQuestionType {}
+
+export interface RoomType {
+  title: string
+  authorID: string
+  key: string
+  questions: RoomQuestionType[]
+}
+
 export { app, auth, database, firebase, analytics }
