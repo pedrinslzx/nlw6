@@ -20,7 +20,16 @@ const auth = firebase.auth()
 const database = firebase.database()
 const analytics = firebase.analytics()
 
-export interface RoomQuestionType {}
+export interface RoomQuestionType {
+  key: string
+  content: string
+  isAnswered: boolean
+  isHighlighted: boolean
+  author: {
+    name: string
+    photoURL: string
+  }
+}
 
 export interface RoomType {
   title: string

@@ -3,6 +3,7 @@ import { ReactComponent as CopyImage } from '../../assets/images/copy.svg'
 import { ReactComponent as CheckImage } from '../../assets/images/check-white.svg'
 
 import styles from './styles.module.scss'
+import { toast } from 'react-toastify'
 
 interface RoomCodeProps {
   code: string
@@ -17,9 +18,10 @@ function RoomCode({ code }: RoomCodeProps) {
       try {
         await navigator.clipboard.writeText(code)
         setCopy(true)
+        toast('O codigo da sala foi copiado', { type: 'success' })
         setTimeout(() => setCopy(false), 1000)
       } catch {
-        alert('Erro ao copiar o código da sala')
+        toast('Erro ao copiar o código da sala', { type: 'error' })
       }
     },
     [code]

@@ -16,7 +16,6 @@ interface AuthUser {
 }
 
 interface AuthContextType {
-  loggedIn: boolean
   user: AuthUser | null
   signInWithGoogle: () => Promise<void>
   logout: () => Promise<void>
@@ -31,7 +30,7 @@ export function formatUserInfo(user: firebase.User | null): AuthUser | null {
     uid: user.uid,
     name: user.displayName,
     email: user.email,
-    photoURL: user.photoURL
+    photoURL: user.photoURL,
   }
 }
 
@@ -39,7 +38,6 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<AuthUser | null>(
     formatUserInfo(auth.currentUser)
   )
-  const loggedIn = !!user
 
   useEffect(() => {
     auth.setPersistence(firebase.auth.Auth.Persistence.LOCAL)
@@ -49,7 +47,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         toast('Estão faltando algumas infos da sua conta', { type: 'error' })
         return
       }
-      toast(`Seja bem-vindo(a), ${user.displayName}`, { type: 'info', autoClose: 2000, closeOnClick: false })
+      toast(`Seja bem-vindo(a), ${user.displayName}`, { type: 'info', autoClose: 2000 })
       setUser(formatUserInfo(user))
     })
 
@@ -59,6 +57,10 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const signInWithGoogle = useCallback(
     async function signInWithGoogle() {
       const GoogleAuthProvider = new firebase.auth.GoogleAuthProvider()
+
+      GoogleAuthProvider.addScope('https://www.googleapis.com/auth/userinfo.email')
+      GoogleAuthProvider.addScope('https://www.googleapis.com/auth/userinfo.profile')
+
       const userCredentials = await auth.signInWithPopup(GoogleAuthProvider)
       if (!userCredentials.user) return
       if (!userCredentials.user.displayName || !userCredentials.user.email) {
@@ -72,10 +74,11 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   async function logout() {
     await auth.signOut()
+    window.location.reload()
   }
 
   return (
-    <AuthContext.Provider value={{ loggedIn, user, signInWithGoogle, logout }}>
+    <AuthContext.Provider value={{ user, signInWithGoogle, logout }}>
       {children}
     </AuthContext.Provider>
   )

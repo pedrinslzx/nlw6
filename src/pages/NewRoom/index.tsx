@@ -19,27 +19,30 @@ interface NewRoomForm {
 
 export function NewRoom() {
   const history = useHistory()
-  const { loggedIn, user } = useAuth()
+  const { user } = useAuth()
 
   const { handleSubmit, register } = useForm<NewRoomForm>()
 
   useEffect(() => {
-    if (!loggedIn || !user) {
+    if (!user) {
       history.push('/')
       toast('Parece que você não está logado', { type: 'warning' })
     }
-  }, [history, loggedIn, user])
+  }, [history, user])
 
   async function handleCreateRoom({ new_room }: NewRoomForm) {
-    if (new_room.trim() === '') return
-    const newRoom = new_room.trim()
+    try {
+      if (new_room.trim() === '') return
+      const newRoom = new_room.trim()
 
-    const roomRef = database.ref('rooms')
+      const roomRef = database.ref('rooms')
 
-    const room = await roomRef.push({ title: newRoom, authorID: user?.uid })
+      const room = await roomRef.push({ title: newRoom, authorID: user?.uid })
 
-    // console.log(room)
-    history.push(`/rooms/${room?.key}`)
+      history.push(`/rooms/${room?.key}`)
+    } catch (e) {
+      toast.error(e.message || 'Ocorreu um erro ao criar a sala')
+    }
   }
 
   return (
