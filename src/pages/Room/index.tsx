@@ -1,16 +1,20 @@
-import { useEffect, useState } from 'react'
 import { useHistory, useParams } from 'react-router-dom'
 import { useForm } from 'react-hook-form'
 
 import { ReactComponent as LogoImage } from '../../assets/images/logo.svg'
-import { ReactComponent as IllustrationImage } from '../../assets/images/illustration-no-questions.svg'
+import { ReactComponent as IllustrationImage } from '../../assets/images/empty-questions.svg'
+import { ReactComponent as LikeIcon } from '../../assets/images/like.svg'
 import Button from '../../components/Button'
 
-import { database, RoomQuestionType, firebase } from '../../services/firebase'
 import styles from './styles.module.scss'
 import RoomCode from '../../components/RoomCode'
 import { useAuth } from '../../hooks/useAuth'
-import { toast } from 'react-toastify'
+import { Question } from '../../components/Question'
+import { useRoom } from '../../hooks/useRoom'
+import { useCallback } from 'react'
+import { toast } from 'react-hot-toast'
+import { database } from '../../services/firebase'
+import { formatPlural } from '../../services/utils'
 
 interface RoomParams {
   id: string
@@ -20,59 +24,27 @@ interface RoomFormData {
   question: string
 }
 
-function formatPlural(amount: number): 's' | '' | null {
-  if (typeof amount !== 'number') return null
-  if (amount > 1 || amount === 0) return 's'
-  return ''
-}
-
 export function Room() {
   const params = useParams<RoomParams>()
   const roomID = params.id.trim()
   const history = useHistory()
   const auth = useAuth()
-  const { handleSubmit, register, reset, setFocus } = useForm<RoomFormData>()
-  const [questions, setQuestions] = useState<RoomQuestionType[]>([])
-  const [title, setTitle] = useState('')
+  const { title, questions, closedAt, handleLikeQuestion } = useRoom({ roomID, isAdmin: false })
+  const form = useForm<RoomFormData>()
 
-  useEffect(() => {
+  const handleSendQuestion = useCallback(async function handleSendQuestion({ question: content }: RoomFormData) {
     try {
-      const roomRef = database.ref(`rooms/${roomID}`)
-
-      const onValue = (room: firebase.database.DataSnapshot) => {
-        const roomData = room.val()
-        if (!roomData.questions) roomData.questions = {}
-        const questions: RoomQuestionType[] = []
-
-        for (const key in roomData.questions) {
-          if (Object.prototype.hasOwnProperty.call(roomData.questions, key)) {
-            questions.push({ ...roomData.questions[key], key })
-          }
-        }
-
-        setQuestions(questions)
-        setTitle(roomData.title)
-      }
-
-      roomRef.on('value', onValue)
-      return () => roomRef.off('value', onValue)
-    } catch (e) {
-      toast.error(e.message || 'Ocorreu um erro ao carregar a sala')
-    }
-  }, [history, roomID])
-
-  async function handleSendQuestion(data: RoomFormData) {
-    try {
-      if (data.question.trim() === '') {
-        toast('Digite sua pergunta!', { type: 'info', onClick: () => setFocus('question') })
+      if (!auth.user) {
+        toast.error(t => <span onClick={() => [toast.dismiss(t.id), auth.signInWithGoogle()]}>'Você não está logado</span>)
         return
       }
-      if (!auth.user) {
-        toast('Você não está logado', { type: 'error', onClick: () => auth.signInWithGoogle() })
+      if (content.trim() === '') {
+        form.setFocus('question')
+        toast.error('Digite sua pergunta!')
         return
       }
       const question = {
-        content: data.question.trim(),
+        content: content.trim(),
         author: {
           name: auth.user.name,
           photoURL: auth.user.photoURL,
@@ -81,18 +53,26 @@ export function Room() {
         isAnswered: false
       }
 
-      await database.ref(`rooms/${roomID}/questions`).push(question)
-      reset()
+      toast.promise(
+        new Promise(resolve => database.ref(`rooms/${roomID}/questions`).push(question).then(resolve)),
+        {
+          loading: 'Enviando pergunta ...',
+          error: 'Erro ao enviar a pergunta',
+          success: 'Pergunta enviada'
+        }
+      )
+
+      form.reset()
     } catch (e) {
       toast.error(e.message || 'Ocorreu um erro ao enviar sua pergunta')
     }
-  }
+  }, [auth, form, roomID])
 
   return (
     <div>
       <header className={styles.header}>
         <div className="content">
-          <LogoImage onClick={() => history.push('/')} />
+          <LogoImage onClick={() => history.push('/my-rooms')} />
 
           <RoomCode code={roomID} />
         </div>
@@ -104,10 +84,12 @@ export function Room() {
           <span>{questions.length || 0} pergunta{formatPlural(questions.length || 0)}</span>
         </div>
 
-        <form onSubmit={handleSubmit(handleSendQuestion)}>
+        <form onSubmit={form.handleSubmit(handleSendQuestion)}>
           <textarea
-            placeholder="Oque você deseja perguntar?"
-            {...register('question')}
+            placeholder={!!closedAt ? `Esta sala foi encerrada em ${new Date(closedAt).toLocaleString()}! Agora você está no modo leitura!` : 'Oque você deseja perguntar?'}
+            disabled={!!closedAt}
+            required
+            {...form.register('question')}
           />
           <div className={styles.form_footer}>
             {!!auth.user && (
@@ -119,26 +101,45 @@ export function Room() {
             {!auth.user && (
               <span>
                 Para enviar uma pergunta,{' '}
-                <button onClick={auth.signInWithGoogle}>
+                <button onClick={auth.signInWithGoogle} type="button">
                   faça seu login
                 </button>
               </span>
             )}
-            <Button type="submit" disabled={!auth.user}>
+            <Button type="submit" disabled={!!closedAt || !auth.user}>
               Enviar pergunta
             </Button>
           </div>
         </form>
-        {!questions.length && (
+        {questions.length > 0 ? (
+          <div className={styles.questions}>
+            {questions.map(question => {
+              return (
+                <Question
+                  key={question.key}
+                  author={question.author}
+                  content={question.content}
+                >
+                  <button
+                    className={`like-button ${question.likeID ? 'liked' : ''}`}
+                    type="button"
+                    aria-label="Marcar como gostei"
+                    onClick={() => handleLikeQuestion(question.key, question.likeID)}
+                  >
+                    {question.likeCount > 0 && <span>{question.likeCount}</span>}
+                    <LikeIcon />
+                  </button>
+                </Question>
+              )
+            })}
+          </div>
+        ) : (
           <div className={styles.noQuestions}>
             <IllustrationImage />
             <h2>Nenhuma pergunta por aqui...</h2>
             <p>Faça o seu login e seja a primeira pessoa a fazer uma pergunta!</p>
           </div>
         )}
-        {questions.map(question => {
-          return <p key={question.key}>{question.content}</p>
-        })}
       </main>
     </div>
   )

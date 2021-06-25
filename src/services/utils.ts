@@ -47,3 +47,9 @@ export function randomChar(length: number = 5) {
 
   return result.join('')
 }
+
+export function formatPlural(amount: number): 's' | '' | null {
+  if (typeof amount !== 'number') return null
+  if (amount > 1 || amount === 0) return 's'
+  return ''
+}

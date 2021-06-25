@@ -1,0 +1,54 @@
+.button {
+  --primary-color: #835afd;
+  --contrast-color: #fefefe;
+  height: 50px;
+  border-radius: 8px;
+  padding: 0 16px;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  font-size: 16px;
+  line-height: 18.75px;
+
+  font-weight: 500;
+
+  color: var(--contrast-color);
+  background-color: var(--primary-color);
+
+  border: none;
+  cursor: pointer;
+
+  transition: filter 300ms;
+
+  &:not(:disabled):hover {
+    filter: brightness(0.9);
+  }
+
+  &:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+  .icon {
+    margin-right: 8px;
+  }
+
+  &.outline {
+    border: 1px solid var(--primary-color);
+    background-color: var(--contrast-color);
+    color: var(--primary-color);
+  }
+  &.danger {
+    --primary-color: #e73f5d;
+    --contrast-color: #fefefe;
+  }
+  &.cancel {
+    --primary-color: #dbdcdd;
+    --contrast-color: #737380;
+  }
+  &.google {
+    --primary-color: #ea4335;
+    --contrast-color: #fefefe;
+  }
+}
