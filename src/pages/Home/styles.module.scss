@@ -144,7 +144,8 @@
 
   transition: filter 300ms;
 
-  > img {
+  > svg,
+  > .icon {
     margin-right: 8px;
   }
 

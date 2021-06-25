@@ -5,14 +5,14 @@ import styles from './styles.module.scss'
 interface ButtonProps
   extends Omit<ButtonHTMLAttributes<HTMLButtonElement>, 'className'> {
   children: ReactNode
-  icon?: string
+  icon?: React.FunctionComponent<any>
   alt?: string
 }
 
-function Button({ children, icon, alt, ...rest }: ButtonProps) {
+function Button({ children, icon: Icon, alt, ...rest }: ButtonProps) {
   return (
     <button className={styles.container} {...rest}>
-      {icon && alt && <img src={icon} alt={alt} />}
+      {Icon && <Icon className={styles.icon} />}
       {children}
     </button>
   )

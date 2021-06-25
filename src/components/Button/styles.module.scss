@@ -20,10 +20,6 @@
 
   transition: filter 300ms;
 
-  > img {
-    margin-right: 8px;
-  }
-
   &:not(:disabled):hover {
     filter: brightness(0.9);
   }
@@ -32,4 +28,8 @@
     opacity: 0.6;
     cursor: not-allowed;
   }
+}
+
+.icon {
+  margin-right: 8px;
 }
