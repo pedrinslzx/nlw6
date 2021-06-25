@@ -5,7 +5,8 @@ import {
   useEffect,
   useState
 } from 'react'
-import { toast } from 'react-toastify'
+import { toast } from 'react-hot-toast'
+import { useHistory } from 'react-router-dom'
 import { auth, firebase } from '../services/firebase'
 
 interface AuthUser {
@@ -35,6 +36,7 @@ export function formatUserInfo(user: firebase.User | null): AuthUser | null {
 }
 
 export function AuthProvider({ children }: { children: ReactNode }) {
+  const history = useHistory()
   const [user, setUser] = useState<AuthUser | null>(
     formatUserInfo(auth.currentUser)
   )
@@ -44,10 +46,10 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     const unsubscribe = auth.onAuthStateChanged(user => {
       if (!user) return
       if (!user.displayName || !user.email) {
-        toast('Estão faltando algumas infos da sua conta', { type: 'error' })
+        toast.error('Estão faltando algumas infos da sua conta')
         return
       }
-      toast(`Seja bem-vindo(a), ${user.displayName}`, { type: 'info', autoClose: 2000 })
+      toast.success(`Login feito como: ${user.displayName}`)
       setUser(formatUserInfo(user))
     })
 
@@ -64,7 +66,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       const userCredentials = await auth.signInWithPopup(GoogleAuthProvider)
       if (!userCredentials.user) return
       if (!userCredentials.user.displayName || !userCredentials.user.email) {
-        toast('Estão faltando algumas infos da sua conta', { type: 'error' })
+        toast.error('Estão faltando algumas infos da sua conta')
         return
       }
       setUser(formatUserInfo(userCredentials.user))
@@ -73,8 +75,12 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   )
 
   async function logout() {
-    await auth.signOut()
-    window.location.reload()
+    await toast.promise(auth.signOut(), {
+      loading: 'Saindo ...',
+      error: 'Erro ao fazer o logout',
+      success: 'Logout feito com sucesso'
+    })
+    history.push('/')
   }
 
   return (

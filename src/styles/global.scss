@@ -1,12 +1,12 @@
 :root {
   -webkit-font-smoothing: antialiased;
+  scroll-behavior: smooth;
 }
 
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  outline: none !important;
 }
 
 body,
@@ -23,4 +23,6 @@ body,
 
   background-color: #f8f8f8;
   color: #29292e;
+
+  overflow-x: hidden;
 }

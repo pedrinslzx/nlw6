@@ -29,6 +29,8 @@ export interface RoomQuestionType {
     name: string
     photoURL: string
   }
+  likeCount: number
+  likeID: string | null
 }
 
 export interface RoomType {

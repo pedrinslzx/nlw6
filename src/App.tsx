@@ -1,16 +1,19 @@
 import { BrowserRouter, Switch, Route } from 'react-router-dom'
 import { AuthProvider } from './contexts/AuthContext'
 
-import { ToastContainer } from 'react-toastify'
+import { Toaster } from 'react-hot-toast'
 
 import './styles/global.scss'
-import 'react-toastify/dist/ReactToastify.css'
 
 import { Home } from './pages/Home'
 import { NewRoom } from './pages/NewRoom'
+import { AdminRoom } from './pages/AdminRoom'
 import { Room } from './pages/Room'
 
 import { Analytics } from './services/Analytics'
+
+import './styles/modal.scss'
+import { AdminRoomsList } from './pages/AdminRoomsList'
 
 function App() {
   return (
@@ -27,8 +30,18 @@ function App() {
             <Route path="/rooms/:id">
               <Room />
             </Route>
+            <Route path="/my-rooms/:id">
+              <AdminRoom />
+            </Route>
+            <Route path="/my-rooms/">
+              <AdminRoomsList />
+            </Route>
           </Switch>
-          <ToastContainer newestOnTop draggable />
+          <Toaster
+            position="top-right"
+            reverseOrder={true}
+            toastOptions={{ duration: 3000 }}
+          />
         </Analytics>
       </AuthProvider>
     </BrowserRouter>

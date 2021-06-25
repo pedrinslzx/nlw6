@@ -9,8 +9,8 @@ import styles from './styles.module.scss'
 import Button from '../../components/Button'
 import { useAuth } from '../../hooks/useAuth'
 
-import { database } from '../../services/firebase'
-import { toast } from 'react-toastify'
+import { database, firebase } from '../../services/firebase'
+import { toast } from 'react-hot-toast'
 import { useEffect } from 'react'
 
 interface NewRoomForm {
@@ -26,20 +26,29 @@ export function NewRoom() {
   useEffect(() => {
     if (!user) {
       history.push('/')
-      toast('Parece que você não está logado', { type: 'warning' })
+      toast.error('Parece que você não está logado')
     }
   }, [history, user])
 
   async function handleCreateRoom({ new_room }: NewRoomForm) {
     try {
-      if (new_room.trim() === '') return
+      if (new_room.trim() === '' || !user) return
       const newRoom = new_room.trim()
 
       const roomRef = database.ref('rooms')
 
-      const room = await roomRef.push({ title: newRoom, authorID: user?.uid })
-
-      history.push(`/rooms/${room?.key}`)
+      const room = await toast.promise(
+        new Promise<firebase.database.Reference>(resolve => roomRef
+          .push({ title: newRoom, authorID: user.uid, isClosed: false }).then(resolve)),
+        {
+          error: 'Erro ao criar a sala',
+          loading: 'Criando sala ...',
+          success: 'Sala criada com sucesso'
+        }
+      )
+      const userRoomRef = database.ref(`user_rooms/${user.uid}/${room.key}`)
+      await userRoomRef.set({ title: newRoom, createdIn: new Date().toISOString() })
+      history.push(`/my-rooms/${room?.key}`)
     } catch (e) {
       toast.error(e.message || 'Ocorreu um erro ao criar a sala')
     }

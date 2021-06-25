@@ -10,7 +10,7 @@ import styles from './styles.module.scss'
 import Button from '../../components/Button'
 import { useAuth } from '../../hooks/useAuth'
 import { database } from '../../services/firebase'
-import { toast } from 'react-toastify'
+import { toast } from 'react-hot-toast'
 
 interface HomeForm {
   room_id: string
@@ -26,7 +26,7 @@ export function Home() {
       if (!auth.user) {
         await auth.signInWithGoogle()
       }
-      history.push('/rooms/new')
+      history.push('/my-rooms')
     } catch (err) {
       toast.error(err.message || 'Erro ao criar a sala')
     }
@@ -56,11 +56,9 @@ export function Home() {
       <main className={styles.main}>
         <div className={styles.main_content}>
           <img src={LogoImage} alt="LetMeAsk" />
-          <button className={styles.button} onClick={handleCreateRoom}>
-            <GoogleImage className="icon" />
-            {auth.user && 'Criar sala'}
-            {!auth.user && 'Crie sua sala com o Google'}
-          </button>
+          <Button color='google' icon={GoogleImage} onClick={handleCreateRoom}>
+            Entrar com o Google
+          </Button>
           <div className={styles.separator}>Ou entre em uma sala</div>
 
           <form onSubmit={handleSubmit(handleJoinRoom)}>
