@@ -1,13 +1,15 @@
-.container {
+import styled from 'styled-components'
+
+export const Container = styled.div`
   width: 100%;
   height: 100vh;
 
   display: flex;
   align-items: stretch;
-}
+`
 
-.aside {
-  background-color: #835afd;
+export const SideBar = styled.aside`
+  background-color: ${p => p.theme.$primary};
 
   flex: 7;
 
@@ -17,7 +19,7 @@
 
   padding: 120px 80px;
 
-  color: #ffffff;
+  color: ${p => p.theme.$white};
 
   > img {
     height: auto;
@@ -43,16 +45,16 @@
     font-weight: 400;
     max-width: 440px;
 
-    color: #f8f8f8;
+    color: ${p => p.theme.$white};
   }
 
   @media (max-width: 800px) {
     display: none;
     visibility: hidden;
   }
-}
+`
 
-.main {
+export const Main = styled.main`
   flex: 8;
 
   padding: 0 32px;
@@ -61,9 +63,9 @@
   justify-content: center;
   align-items: center;
   flex-direction: column;
-}
+`
 
-.main_content {
+export const MainContent = styled.div`
   display: flex;
   justify-content: center;
   align-items: stretch;
@@ -71,37 +73,32 @@
 
   width: 100%;
   max-width: 320px;
+`
 
-  > img {
-    align-self: center;
-    margin-bottom: 32px;
+export const Form = styled.form`
+  input,
+  button {
+    width: 100%;
   }
 
-  form {
-    input,
-    button {
-      width: 100%;
-    }
+  input {
+    height: 50px;
+    border-radius: 8px;
+    padding: 0 16px;
 
-    input {
-      height: 50px;
-      border-radius: 8px;
-      padding: 0 16px;
+    background-color: ${p => p.theme.$background};
 
-      background-color: #fff;
-
-      border: 1px solid #a8a8b3;
-    }
-
-    button {
-      margin-top: 16px;
-    }
+    border: 1px solid ${p => p.theme.$gray_medium};
   }
-}
 
-.separator {
+  button {
+    margin-top: 16px;
+  }
+`
+
+export const Separator = styled.div`
   font-size: 14px;
-  color: #a8a8a8;
+  color: ${p => p.theme.$gray_medium};
 
   margin: 32px 0;
   display: flex;
@@ -112,7 +109,7 @@
     content: '';
     flex: 1;
     height: 1px;
-    background-color: #a8a8a8;
+    background-color: ${p => p.theme.$gray_medium};
   }
   &::before {
     margin-right: 16px;
@@ -120,19 +117,9 @@
   &::after {
     margin-left: 16px;
   }
-}
+`
 
-.text {
-  font-size: 14px;
-  color: #737380;
-  margin-top: 16px;
-
-  a {
-    color: #e559f9;
-  }
-}
-
-.title {
+export const Title = styled.h2`
   font-family: Poppins, sans-serif;
   font-size: 24px;
   line-height: 36px;
@@ -141,4 +128,19 @@
   align-self: center;
 
   margin-bottom: 24px;
-}
+`
+
+export const Text = styled.p`
+  font-size: 14px;
+  color: ${p => p.theme.$gray_medium_hover};
+  margin-top: 16px;
+
+  a {
+    color: ${p => p.theme.$pink_dark};
+  }
+`
+
+export const Logo = styled.div`
+  align-self: center;
+  margin-bottom: 32px;
+`

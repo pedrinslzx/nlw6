@@ -1,10 +1,18 @@
-import { useCallback, useEffect, useState } from "react"
-import { useHistory } from "react-router-dom"
-import { toast } from "react-hot-toast"
-import { database, RoomQuestionType, firebase } from "../services/firebase"
-import { useAuth } from "./useAuth"
+import { useCallback, useEffect, useState } from 'react'
+import { toast } from 'react-hot-toast'
+import { useHistory } from 'react-router-dom'
 
-export function useRoom({ roomID, isAdmin = true }: { roomID: string, isAdmin?: boolean }) {
+import { database, RoomQuestionType, firebase } from '../services/firebase'
+
+import { useAuth } from './useAuth'
+
+export function useRoom({
+  roomID,
+  isAdmin = true
+}: {
+  roomID: string
+  isAdmin?: boolean
+}) {
   const history = useHistory()
   const [questions, setQuestions] = useState<RoomQuestionType[]>([])
   const [title, setTitle] = useState('')
@@ -21,8 +29,10 @@ export function useRoom({ roomID, isAdmin = true }: { roomID: string, isAdmin?: 
           toast.error('Essa sala não existe')
           return history.push('/')
         }
-        if (roomData.authorID === auth.user?.uid && !isAdmin) return history.push(`/my-rooms/${roomID}`)
-        if (roomData.authorID !== auth.user?.uid && isAdmin) return history.push(`/rooms/${roomID}`)
+        if (roomData.authorID === auth.user?.uid && !isAdmin)
+          return history.push(`/my-rooms/${roomID}`)
+        if (roomData.authorID !== auth.user?.uid && isAdmin)
+          return history.push(`/rooms/${roomID}`)
         if (!roomData.questions) roomData.questions = {}
         const questions: RoomQuestionType[] = []
 
@@ -32,16 +42,38 @@ export function useRoom({ roomID, isAdmin = true }: { roomID: string, isAdmin?: 
             questions.push({
               key,
               likeCount: Object.values(q.likes ?? {}).length,
-              likeID: Object.entries<{ authorID: string }>(q.likes ?? {}).find(([, like]) => like.authorID === auth.user?.uid)?.[0] || null,
+              likeID:
+                Object.entries<{ authorID: string }>(q.likes ?? {}).find(
+                  ([, like]) => like.authorID === auth.user?.uid
+                )?.[0] || null,
               author: q.author,
               content: q.content,
               isAnswered: q.isAnswered,
-              isHighlighted: q.isHighlighted,
+              isHighlighted: q.isHighlighted
             })
           }
         }
 
-        setQuestions(questions)
+        setQuestions(
+          questions.sort((a, b) => {
+            if (b.isAnswered) {
+              return -1
+            }
+            if (a.isAnswered) {
+              return 1
+            }
+
+            if (b.isHighlighted) {
+              return 1
+            }
+            if (a.isHighlighted) {
+              return -1
+            }
+
+            // a must be equal to b
+            return 0
+          })
+        )
         setTitle(roomData.title)
         setClosedDate(roomData.closedAt)
       }
@@ -53,24 +85,36 @@ export function useRoom({ roomID, isAdmin = true }: { roomID: string, isAdmin?: 
     }
   }, [auth.user?.uid, history, roomID, isAdmin, setClosedDate])
 
-  const handleLikeQuestion = useCallback(async function handleLikeQuestion(questionID: string, likeID: string | null) {
-    if (!auth.user) return toast.error('Você não está logado')
-    if (!!closedAt) return toast.error('Você está no modo de leitura!')
-    try {
-      const likesRef = database.ref(`/rooms/${roomID}/questions/${questionID}/likes`)
-      if (likeID) {
-        const likeRef = database.ref(`/rooms/${roomID}/questions/${questionID}/likes/${likeID}`)
-        const userLike = await likeRef.get()
-        if (!userLike.exists()) await likesRef.push({ authorID: auth.user?.uid })
-        await likeRef.remove()
-      } else {
-        await likesRef.push({ authorID: auth.user?.uid })
+  const handleLikeQuestion = useCallback(
+    async function handleLikeQuestion(
+      questionID: string,
+      likeID: string | null
+    ) {
+      if (!auth.user) return toast.error('Você não está logado')
+      if (!!closedAt) return toast.error('Você está no modo de leitura!')
+      try {
+        const likesRef = database.ref(
+          `/rooms/${roomID}/questions/${questionID}/likes`
+        )
+        if (likeID) {
+          const likeRef = database.ref(
+            `/rooms/${roomID}/questions/${questionID}/likes/${likeID}`
+          )
+          const userLike = await likeRef.get()
+          if (!userLike.exists())
+            await likesRef.push({ authorID: auth.user?.uid })
+          await likeRef.remove()
+        } else {
+          await likesRef.push({ authorID: auth.user?.uid })
+        }
+      } catch (error) {
+        toast.error(
+          error.message || 'Erro ao marcar/desmarcar a pergunta como gostei'
+        )
       }
-
-    } catch (error) {
-      toast.error(error.message || 'Erro ao marcar/desmarcar a pergunta como gostei')
-    }
-  }, [auth.user, closedAt, roomID])
+    },
+    [auth.user, closedAt, roomID]
+  )
 
   return { questions, title, closedAt, handleLikeQuestion }
 }

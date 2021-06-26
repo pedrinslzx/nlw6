@@ -1,49 +1,39 @@
-import { BrowserRouter, Switch, Route } from 'react-router-dom'
-import { AuthProvider } from './contexts/AuthContext'
-
+import { useEffect } from 'react'
 import { Toaster } from 'react-hot-toast'
+import { BrowserRouter } from 'react-router-dom'
 
-import './styles/global.scss'
-
-import { Home } from './pages/Home'
-import { NewRoom } from './pages/NewRoom'
-import { AdminRoom } from './pages/AdminRoom'
-import { Room } from './pages/Room'
-
+import { AuthProvider } from './contexts/AuthContext'
+import { ModalProvider } from './contexts/ModalContext'
+import { ThemeProvider } from './contexts/ThemeContext'
 import { Analytics } from './services/Analytics'
+import { GlobalStyles } from './styles/global'
 
-import './styles/modal.scss'
-import { AdminRoomsList } from './pages/AdminRoomsList'
+import { Routes } from './Router'
+
+const modal = document.createElement('div')
 
 function App() {
+  useEffect(() => {
+    document.body.appendChild(modal)
+    return () => modal.remove()
+  })
   return (
     <BrowserRouter>
-      <AuthProvider>
-        <Analytics>
-          <Switch>
-            <Route path="/" exact>
-              <Home />
-            </Route>
-            <Route path="/rooms/new">
-              <NewRoom />
-            </Route>
-            <Route path="/rooms/:id">
-              <Room />
-            </Route>
-            <Route path="/my-rooms/:id">
-              <AdminRoom />
-            </Route>
-            <Route path="/my-rooms/">
-              <AdminRoomsList />
-            </Route>
-          </Switch>
-          <Toaster
-            position="top-right"
-            reverseOrder={true}
-            toastOptions={{ duration: 3000 }}
-          />
-        </Analytics>
-      </AuthProvider>
+      <ModalProvider mainAppEl={modal}>
+        <AuthProvider>
+          <ThemeProvider>
+            <Analytics>
+              <Routes />
+              <Toaster
+                position="top-right"
+                reverseOrder={true}
+                toastOptions={{ duration: 2000 }}
+              />
+            </Analytics>
+            <GlobalStyles />
+          </ThemeProvider>
+        </AuthProvider>
+      </ModalProvider>
     </BrowserRouter>
   )
 }

@@ -1,7 +1,8 @@
-#admin-room-list {
-  > header {
-    padding: 24px;
-    border-bottom: 1px solid #e2e2e2;
+import styled from "styled-components";
+
+export const Header = styled.header`
+  padding: 24px;
+    border-bottom: 1px solid ${p => p.theme.$highlight};
 
     > div {
       max-width: 1120px;
@@ -28,10 +29,11 @@
         }
       }
     }
-  }
+`
 
-  > main {
-    max-width: 800px;
+export const Main = styled.main`
+  max-width: 800px;
+  flex: 1;
     margin: 0 auto;
     padding: 0 32px;
 
@@ -50,36 +52,39 @@
         font-size: 24px;
         line-height: 36px;
 
-        color: #29292e;
+        color: ${p => p.theme.$color};
       }
 
       > span {
         margin-left: 16px;
-        background-color: #e559f9;
+        background-color: ${p => p.theme.$pink_dark};
 
         padding: 8px 16px;
 
         border-radius: 50px;
 
-        color: #fff;
+        color: ${p => p.theme.$background};
 
         font-weight: 500;
 
         font-size: 14px;
       }
     }
-  }
-}
+`
 
-.room {
-  background: #fefefe;
+export const Room = styled.div`
+  background: ${p => p.theme.$details};
   border-radius: 8px;
-  box-shadow: 0px 2px 12px rgba(0, 0, 0, 0.04);
+  box-shadow: 0px 2px 12px ${p => p.theme.$box_shadow};
   padding: 24px;
 
   cursor: pointer;
-  transition: filter 0.2s;
+
+  transition-property: filter, box-shadow;
+  transition-duration: 0.2s;
+
   &:hover {
+    box-shadow: 0px 2px 12px ${p => p.theme.$box_shadow_hover};
     filter: brightness(0.9);
   }
 
@@ -88,7 +93,7 @@
   }
 
   > p {
-    color: #29292e;
+    color: ${p => p.theme.$color};
 
     display: flex;
     align-items: center;
@@ -101,8 +106,9 @@
     > code {
       margin-left: 16px;
 
-      background: #fff;
-      border: 1px solid #835afd;
+      color: ${p => p.theme.$color};
+      background: ${p => p.theme.$background};
+      border: 1px solid ${p => p.theme.$primary};
 
       padding: 4px 12px;
 
@@ -131,9 +137,17 @@
 
       span {
         margin-left: 8px;
-        color: #737380;
+        color: ${p => p.theme.$gray_dark};
         font-size: 14px;
       }
     }
   }
-}
+`
+
+export const Content = styled.div`
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+`

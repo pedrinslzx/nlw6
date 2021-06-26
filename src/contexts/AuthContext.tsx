@@ -7,6 +7,7 @@ import {
 } from 'react'
 import { toast } from 'react-hot-toast'
 import { useHistory } from 'react-router-dom'
+
 import { auth, firebase } from '../services/firebase'
 
 interface AuthUser {
@@ -31,7 +32,7 @@ export function formatUserInfo(user: firebase.User | null): AuthUser | null {
     uid: user.uid,
     name: user.displayName,
     email: user.email,
-    photoURL: user.photoURL,
+    photoURL: user.photoURL
   }
 }
 
@@ -60,8 +61,12 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     async function signInWithGoogle() {
       const GoogleAuthProvider = new firebase.auth.GoogleAuthProvider()
 
-      GoogleAuthProvider.addScope('https://www.googleapis.com/auth/userinfo.email')
-      GoogleAuthProvider.addScope('https://www.googleapis.com/auth/userinfo.profile')
+      GoogleAuthProvider.addScope(
+        'https://www.googleapis.com/auth/userinfo.email'
+      )
+      GoogleAuthProvider.addScope(
+        'https://www.googleapis.com/auth/userinfo.profile'
+      )
 
       const userCredentials = await auth.signInWithPopup(GoogleAuthProvider)
       if (!userCredentials.user) return

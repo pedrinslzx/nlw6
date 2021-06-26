@@ -1,17 +1,26 @@
-import { Link, useHistory } from 'react-router-dom'
-import { useForm } from 'react-hook-form'
-
-import { ReactComponent as IllustrationImage } from '../../assets/images/illustration.svg'
-import { ReactComponent as LoginIcon } from '../../assets/images/login.svg'
-import LogoImage from '../../assets/images/logo.svg'
-
-import styles from './styles.module.scss'
-import Button from '../../components/Button'
-import { useAuth } from '../../hooks/useAuth'
-
-import { database, firebase } from '../../services/firebase'
-import { toast } from 'react-hot-toast'
 import { useEffect } from 'react'
+import { useForm } from 'react-hook-form'
+import { toast } from 'react-hot-toast'
+import { Link, useHistory } from 'react-router-dom'
+
+import { Button } from '../../components/Button'
+import {
+  HomeIllustration,
+  LoginIcon,
+  Logo
+} from '../../components/Icons'
+import { useAuth } from '../../hooks/useAuth'
+import { database, firebase } from '../../services/firebase'
+import {
+  Container,
+  Form,
+  Main,
+  MainContent,
+  Title,
+  Text,
+  SideBar,
+  Logo as LogoContainer
+} from './styles'
 
 interface NewRoomForm {
   new_room: string
@@ -38,16 +47,22 @@ export function NewRoom() {
       const roomRef = database.ref('rooms')
 
       const room = await toast.promise(
-        new Promise<firebase.database.Reference>(resolve => roomRef
-          .push({ title: newRoom, authorID: user.uid, isClosed: false }).then(resolve)),
+        new Promise<firebase.database.Reference>(resolve =>
+          roomRef
+            .push({ title: newRoom, authorID: user.uid, isClosed: false })
+            .then(resolve)
+        ),
         {
           error: 'Erro ao criar a sala',
           loading: 'Criando sala ...',
           success: 'Sala criada com sucesso'
         }
       )
-      const userRoomRef = database.ref(`user_rooms/${user.uid}/${room.key}`)
-      await userRoomRef.set({ title: newRoom, createdIn: new Date().toISOString() })
+      const userRoomRef = database.ref(`user/${user.uid}/rooms/${room.key}`)
+      await userRoomRef.set({
+        title: newRoom,
+        createdIn: new Date().toISOString()
+      })
       history.push(`/my-rooms/${room?.key}`)
     } catch (e) {
       toast.error(e.message || 'Ocorreu um erro ao criar a sala')
@@ -55,18 +70,20 @@ export function NewRoom() {
   }
 
   return (
-    <div className={styles.container}>
-      <aside className={styles.aside}>
-        <IllustrationImage />
+    <Container>
+      <SideBar>
+        <HomeIllustration />
         <strong>Toda pergunta tem uma resposta.</strong>
         <p>Aprenda e compartilhe conhecimento com outras pessoas</p>
-      </aside>
-      <main className={styles.main}>
-        <div className={styles.main_content}>
-          <img src={LogoImage} alt="letmeask" />
-          <h2 className={styles.title}>Criar uma nova sala</h2>
+      </SideBar>
+      <Main>
+        <MainContent>
+          <LogoContainer>
+            <Logo />
+          </LogoContainer>
+          <Title>Criar uma nova sala</Title>
 
-          <form onSubmit={handleSubmit(handleCreateRoom)}>
+          <Form onSubmit={handleSubmit(handleCreateRoom)}>
             <input
               type="text"
               placeholder="Nome da sala"
@@ -79,13 +96,13 @@ export function NewRoom() {
             <Button type="submit" alt="Criar" icon={LoginIcon}>
               Criar sala
             </Button>
-          </form>
-          <p className={styles.text}>
+          </Form>
+          <Text>
             Quer entrar em uma sala já existente?{' '}
-            <Link to="/">Clique aqui</Link>
-          </p>
-        </div>
-      </main>
-    </div>
+            <Link to="/rooms/enter">Clique aqui</Link>
+          </Text>
+        </MainContent>
+      </Main>
+    </Container>
   )
 }
