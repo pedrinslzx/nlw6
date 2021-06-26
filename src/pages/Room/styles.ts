@@ -39,7 +39,6 @@ export const Form = styled.form`
     resize: vertical;
 
     transition-property: filter, border-color;
-    transition-duration: 400ms;
 
     min-height: 130px;
 
@@ -129,7 +128,7 @@ export const RoomTitle = styled.div`
 
     border-radius: 50px;
 
-    color: ${p => p.theme.$background};
+    color: ${p => p.theme.$white};
 
     font-weight: 500;
 
@@ -141,8 +140,8 @@ export const RoomContent = styled.div`
   margin-top: 32px;
   padding-bottom: 32px;
 `
-export const NoQuestions = styled.div`
-  display: flex;
+export const NoQuestions = styled(RoomContent)`
+display: flex;
     flex-direction: column;
 
     align-items: center;

@@ -79,7 +79,6 @@ export const Container = styled.div`
   }
 
   transition-property: background-color, border-color;
-  transition-duration: 300ms;
 
   border: 1px solid transparent;
 

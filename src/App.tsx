@@ -19,9 +19,9 @@ function App() {
   })
   return (
     <BrowserRouter>
-      <ModalProvider mainAppEl={modal}>
-        <AuthProvider>
-          <ThemeProvider>
+      <ThemeProvider>
+        <ModalProvider mainAppEl={modal}>
+          <AuthProvider>
             <Analytics>
               <Routes />
               <Toaster
@@ -31,9 +31,9 @@ function App() {
               />
             </Analytics>
             <GlobalStyles />
-          </ThemeProvider>
-        </AuthProvider>
-      </ModalProvider>
+          </AuthProvider>
+        </ModalProvider>
+      </ThemeProvider>
     </BrowserRouter>
   )
 }

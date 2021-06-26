@@ -104,7 +104,7 @@ export function ModalProvider({ children, mainAppEl }: ModalProviderProps) {
                 button && (
                   <Button
                     key={button.key}
-                    color={button.color}
+                    color={button.color || 'default'}
                     icon={button.icon}
                     role="button"
                     onClick={() => {

@@ -1,7 +1,7 @@
 import { ReactNode } from 'react';
 import { useHistory } from 'react-router-dom';
 
-import { Container } from './styles';
+import { Container, Content, Buttons } from './styles';
 
 import { Logo } from '../Icons';
 
@@ -16,13 +16,13 @@ export function Header({ isDashboard, children }: HeaderProps) {
 
   return (
     <Container>
-      <div className="content">
+      <Content>
         <Logo onClick={() => history.push(isDashboard ? '/' : '/my-rooms')} />
 
-        <div>
+        <Buttons>
           {children}
-        </div>
-      </div>
+        </Buttons>
+      </Content>
     </Container>
   );
 };

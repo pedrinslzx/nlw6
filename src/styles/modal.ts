@@ -8,9 +8,6 @@ export const modal = css`
     right: 0;
     bottom: 0;
 
-    width: 100%;
-    height: 100%;
-
     background: ${p => p.theme.$overlay_color};
 
     width: 100%;
@@ -23,8 +20,6 @@ export const modal = css`
     opacity: 0;
 
     transition-property: opacity;
-    transition-duration: 300ms;
-    transition-timing-function: ease;
 
     &.open,
     &.close {
@@ -33,10 +28,12 @@ export const modal = css`
 
     .modal {
       max-width: 590px;
-      width: 100%;
-
       max-height: 362px;
-      height: 100%;
+
+      padding: 32px;
+
+      width: 90vw;
+      height: 55vh;
 
       background: ${p => p.theme.$background};
       border-radius: 8px;
@@ -68,18 +65,29 @@ export const modal = css`
 
       > .buttons {
         display: flex;
+        align-items: center;
+        justify-content: center;
+
         gap: 8px;
-        > .button {
+
+        > .button,
+        > button {
           min-width: 160px;
+        }
+        @media(max-width:400px){
+          flex-direction: column;
+
+          width: 100%;
+          > .button,
+        > button {
+            width: 100%;
+          }
         }
       }
 
       opacity: 0;
 
       transition-property: opacity;
-      transition-duration: 300ms;
-      transition-delay: 100ms;
-      transition-timing-function: ease;
 
       &.open {
         opacity: 1;

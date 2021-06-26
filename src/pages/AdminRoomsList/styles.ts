@@ -81,7 +81,6 @@ export const Room = styled.div`
   cursor: pointer;
 
   transition-property: filter, box-shadow;
-  transition-duration: 0.2s;
 
   &:hover {
     box-shadow: 0px 2px 12px ${p => p.theme.$box_shadow_hover};
@@ -144,7 +143,12 @@ export const Room = styled.div`
   }
 `
 
-export const Content = styled.div`
+export const RoomsContent = styled.div`
+  margin-top: 32px;
+  padding-bottom: 32px;
+`
+
+export const Content = styled(RoomsContent)`
   flex: 1;
   display: flex;
   flex-direction: column;

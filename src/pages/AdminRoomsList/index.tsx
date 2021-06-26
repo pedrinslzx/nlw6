@@ -7,7 +7,7 @@ import { EmptyQuestions } from '../../components/Icons'
 import { useAuth } from '../../hooks/useAuth'
 import { database } from '../../services/firebase'
 import { formatPlural } from '../../services/utils'
-import { Content, Main, Room } from './styles'
+import { Content, Main, Room, RoomsContent } from './styles'
 
 interface AdminRoom {
   key: string
@@ -63,34 +63,38 @@ export function AdminRoomsList() {
             {rooms.length || 0} sala{formatPlural(rooms.length || 0)}
           </span>
         </div>
-        {rooms.length > 0 ? rooms.map(room => {
-          return (
-            <Room
-              onClick={() => history.push(`/my-rooms/${room.key}`)}
-            >
-              <p>
-                <span>{room.title}</span>
-                <code>{room.key}</code>
-              </p>
-              <footer>
-                <span>
-                  Criada em:{' '}
-                  <time dateTime={room.createdIn.toISOString()}>
-                    {room.createdIn.toLocaleString()}
-                  </time>
-                </span>
-                {room.closedAt && (
-                  <span>
-                    Encerrada em:{' '}
-                    <time dateTime={room.closedAt.toISOString()}>
-                      {room.closedAt.toLocaleString()}
-                    </time>
-                  </span>
-                )}
-              </footer>
-            </Room>
-          )
-        }) : (
+        {rooms.length > 0 ? (
+          <RoomsContent>
+            {rooms.map(room => {
+              return (
+                <Room
+                  onClick={() => history.push(`/my-rooms/${room.key}`)}
+                >
+                  <p>
+                    <span>{room.title}</span>
+                    <code>{room.key}</code>
+                  </p>
+                  <footer>
+                    <span>
+                      Criada em:{' '}
+                      <time dateTime={room.createdIn.toISOString()}>
+                        {room.createdIn.toLocaleString()}
+                      </time>
+                    </span>
+                    {room.closedAt && (
+                      <span>
+                        Encerrada em:{' '}
+                        <time dateTime={room.closedAt.toISOString()}>
+                          {room.closedAt.toLocaleString()}
+                        </time>
+                      </span>
+                    )}
+                  </footer>
+                </Room>
+              )
+            })}
+          </RoomsContent>
+        ) : (
           <Content>
             <EmptyQuestions />
             <h2>Nenhuma sala por aqui...</h2>
