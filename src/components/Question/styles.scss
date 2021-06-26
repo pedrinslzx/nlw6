@@ -40,7 +40,7 @@
       align-items: flex-end;
       justify-content: flex-end;
 
-      gap: 8px;
+      gap: 16px;
     }
 
     button {
@@ -51,24 +51,42 @@
       display: flex;
       align-items: flex-end;
 
+      color: #737380;
+
+      transition: filter 0.2s;
+
+      &.on {
+        color: #835afd !important;
+
+        svg {
+          color: #835afd !important;
+        }
+      }
+
+      &:hover {
+        filter: brightness(0.8);
+      }
+
       &.like-button {
         display: flex;
         align-items: flex-end;
 
         gap: 8px;
-
-        color: #737380;
-
-        transition: filter 0.2s;
-
-        &.liked {
-          color: #835afd !important;
-        }
-
-        &:hover {
-          filter: brightness(0.8);
-        }
       }
     }
+  }
+
+  transition-property: background-color, border-color;
+  transition-duration: 300ms;
+
+  border: 1px solid transparent;
+
+  &.answered {
+    background-color: #dbdcdd;
+  }
+
+  &.highlighted {
+    background-color: #f4f0ff;
+    border-color: #835afd;
   }
 }

@@ -1,6 +1,14 @@
-import { createContext, ReactNode, SVGAttributes, useCallback, useRef, useState } from "react";
-import ReactModal from "react-modal";
-import Button, { ButtonColor } from "../components/Button";
+import {
+  createContext,
+  ReactNode,
+  SVGAttributes,
+  useCallback,
+  useRef,
+  useState
+} from 'react'
+import ReactModal from 'react-modal'
+
+import Button, { ButtonColor } from '../components/Button'
 
 type Icon = React.FunctionComponent<SVGAttributes<SVGElement>>
 
@@ -24,12 +32,13 @@ interface ModalDataType<Values = boolean> {
 }
 
 interface ModalContextType {
-  open: <Values = boolean>(data: ModalDataType<Values>) => Promise<Values | null>
+  open: <Values = boolean>(
+    data: ModalDataType<Values>
+  ) => Promise<Values | null>
   close: () => void
 
   opened: boolean
 }
-
 
 export const ModalContext = createContext({} as ModalContextType)
 
@@ -46,27 +55,39 @@ export function ModalProvider({ children, mainAppEl }: ModalProviderProps) {
 
   const Icon = data.icon
 
-  const open = useCallback(async function open<Value = boolean>(data: ModalDataType<Value>) {
-    setData(data)
-    setOpened(true)
+  const open = useCallback(
+    async function open<Value = boolean>(data: ModalDataType<Value>) {
+      setData(data)
+      setOpened(true)
 
-    await new Promise(resolve => window.addEventListener('modal-result', resolve, { once: true }))
+      await new Promise(resolve =>
+        window.addEventListener('modal-result', resolve, { once: true })
+      )
 
-    return value.current as Value
-  }, [value])
+      return value.current as Value
+    },
+    [value]
+  )
 
-  const close = useCallback(function close() {
-    setOpened(false)
-  }, [setOpened])
+  const close = useCallback(
+    function close() {
+      setOpened(false)
+    },
+    [setOpened]
+  )
 
   return (
     <ModalContext.Provider value={{ open, close, opened }}>
       {children}
       <ReactModal
         onRequestClose={() => setOpened(false)}
-        className={{ base: "modal", afterOpen: "open", beforeClose: "close" }}
-        overlayClassName={{ base: "modal-overlay", afterOpen: "open", beforeClose: "close" }}
-        portalClassName='modal-portal'
+        className={{ base: 'modal', afterOpen: 'open', beforeClose: 'close' }}
+        overlayClassName={{
+          base: 'modal-overlay',
+          afterOpen: 'open',
+          beforeClose: 'close'
+        }}
+        portalClassName="modal-portal"
         contentLabel={data.title}
         appElement={mainAppEl}
         isOpen={opened}
@@ -78,21 +99,24 @@ export function ModalProvider({ children, mainAppEl }: ModalProviderProps) {
         {data.description && <p>{data.description}</p>}
         {data.buttons && (
           <div className="buttons">
-            {data.buttons.map(button => button && (
-              <Button
-                key={button.key}
-                color={button.color}
-                icon={button.icon}
-                role="button"
-                onClick={() => {
-                  window.dispatchEvent(new Event('modal-result'))
-                  value.current = (button.value)
-                  setOpened(false)
-                }}
-              >
-                {button.text}
-              </Button>
-            ))}
+            {data.buttons.map(
+              button =>
+                button && (
+                  <Button
+                    key={button.key}
+                    color={button.color}
+                    icon={button.icon}
+                    role="button"
+                    onClick={() => {
+                      window.dispatchEvent(new Event('modal-result'))
+                      value.current = button.value
+                      setOpened(false)
+                    }}
+                  >
+                    {button.text}
+                  </Button>
+                )
+            )}
           </div>
         )}
       </ReactModal>

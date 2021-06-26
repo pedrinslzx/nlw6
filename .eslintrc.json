@@ -1,6 +1,30 @@
 {
   "extends": [
-    "react-app",
-    "react-app/jest"
-  ]
+    "react-app"
+  ],
+  "plugins": [
+    "eslint-plugin-import-helpers"
+  ],
+  "rules": {
+    "import-helpers/order-imports": [
+      "warn",
+      {
+        "newlinesBetween": "always", // new line between groups
+        "groups": [
+          "module",
+          "/^((\\.|)\\.\/){0,}(pages|styles|components|services|contexts|hooks)/",
+          [
+            "parent",
+            "sibling",
+            "index"
+          ],
+          "/^((\\.|)\\.\/){0,}assets/"
+        ],
+        "alphabetize": {
+          "order": "asc",
+          "ignoreCase": true
+        }
+      }
+    ]
+  }
 }

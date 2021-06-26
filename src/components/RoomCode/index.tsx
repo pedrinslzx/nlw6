@@ -1,15 +1,16 @@
 import { useCallback, useState } from 'react'
-import { ReactComponent as CopyImage } from '../../assets/images/copy.svg'
-import { ReactComponent as CheckImage } from '../../assets/images/check-white.svg'
+import { toast } from 'react-hot-toast'
 
 import styles from './styles.module.scss'
-import { toast } from 'react-hot-toast'
+
+import { ReactComponent as CheckImage } from '../../assets/images/check-white.svg'
+import { ReactComponent as CopyImage } from '../../assets/images/copy.svg'
 
 interface RoomCodeProps {
   code: string
 }
 
-function RoomCode({ code }: RoomCodeProps) {
+export function RoomCode({ code }: RoomCodeProps) {
   const [copy, setCopy] = useState(false)
 
   const copyRoomCode = useCallback(
@@ -33,5 +34,3 @@ function RoomCode({ code }: RoomCodeProps) {
     </button>
   )
 }
-
-export default RoomCode

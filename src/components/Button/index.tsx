@@ -16,9 +16,22 @@ interface ButtonProps
   color?: ButtonColor
 }
 
-function Button({ isOutlined = false, children, icon: Icon, color, ...rest }: ButtonProps) {
+function Button({
+  isOutlined = false,
+  children,
+  icon: Icon,
+  color,
+  ...rest
+}: ButtonProps) {
   return (
-    <button className={['button', isOutlined ? 'outline' : '', color ? color : 'default'].join(' ')} {...rest}>
+    <button
+      className={[
+        'button',
+        isOutlined ? 'outline' : '',
+        color ? color : 'default'
+      ].join(' ')}
+      {...rest}
+    >
       {Icon && <Icon className={'icon'} />}
       {children}
     </button>

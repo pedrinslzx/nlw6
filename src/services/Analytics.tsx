@@ -1,5 +1,6 @@
 import { ReactNode, useEffect } from 'react'
 import { useHistory } from 'react-router-dom'
+
 import { analytics } from './firebase'
 
 interface AnalyticsProps {
