@@ -1,14 +1,15 @@
 import { useCallback } from 'react'
 import { toast } from 'react-hot-toast'
-import { useHistory, useParams } from 'react-router-dom'
+import { useParams } from 'react-router-dom'
 
-import Button from '../../components/Button'
+import { Button } from '../../components/Button'
+import { Header } from '../../components/Header'
 import {
   AnswerIcon,
   DeleteModalIcon,
   CheckIcon,
-  EmptyQuestionsImage,
-  LogoImage
+  EmptyQuestions,
+  DeleteIcon
 } from '../../components/Icons'
 import { LikeIcon } from '../../components/LikeIcon'
 import { Question } from '../../components/Question'
@@ -19,7 +20,7 @@ import { useRoom } from '../../hooks/useRoom'
 import { database } from '../../services/firebase'
 import { cx } from '../../services/utils'
 import { formatPlural } from '../../services/utils'
-import { Header, Main, RoomContent, RoomTitle } from './styles'
+import { Main, RoomContent, RoomTitle, NoQuestions } from './styles'
 
 interface RoomParams {
   id: string
@@ -30,7 +31,6 @@ export function AdminRoom() {
   const auth = useAuth()
   const params = useParams<RoomParams>()
   const roomID = params.id.trim()
-  const history = useHistory()
   const { title, questions, handleLikeQuestion, closedAt } = useRoom({
     roomID,
     isAdmin: true
@@ -60,18 +60,20 @@ export function AdminRoom() {
           })
         ) {
           const userRoomRef = database.ref(
-            `users/${auth.user?.uid}/rooms/${roomID}`
+            `/user/${auth.user?.uid}/rooms/${roomID}`
           )
 
           await toast.promise(
-            database.ref(`/rooms/${roomID}`).update({ closedAt: new Date() }),
+            Promise.all([
+              database.ref(`/rooms/${roomID}`).update({ closedAt: new Date() }),
+              userRoomRef.update({ closedAt: new Date() })
+            ]),
             {
               loading: 'Encerrando sala ...',
               error: 'Erro ao encerrar a sala',
               success: 'A sala foi encerrada'
             }
           )
-          await userRoomRef.update({ closedAt: new Date().toISOString() })
         }
       } else {
         if (
@@ -91,18 +93,20 @@ export function AdminRoom() {
           })
         ) {
           const userRoomRef = database.ref(
-            `user/${auth.user?.uid}/rooms/${roomID}`
+            `/user/${auth.user?.uid}/rooms/${roomID}`
           )
 
           await toast.promise(
-            database.ref(`/rooms/${roomID}`).update({ closedAt: null }),
+            Promise.all([
+              database.ref(`/rooms/${roomID}`).update({ closedAt: null }),
+              userRoomRef.update({ closedAt: null })
+            ]),
             {
               loading: 'Abrindo sala ...',
               error: 'Erro ao abrir a sala',
               success: 'A sala foi aberta'
             }
           )
-          await userRoomRef.update({ closedAt: null })
         }
       }
     },
@@ -203,36 +207,30 @@ export function AdminRoom() {
   return (
     <div>
       <Header>
-        <div className="content">
-          <LogoImage onClick={() => history.push('/my-rooms')} />
-
-          <div>
-            <RoomCode code={roomID} />
-            <Button isOutlined onClick={handleCloseOrOpenRoom}>
-              {!!closedAt ? 'Abrir' : 'Encerrar'} Sala
-            </Button>
-            {navigator.share && (
-              <Button
-                onClick={() =>
-                  toast.promise(
-                    navigator.share({
-                      url: window.location.href,
-                      title: 'LetMeAsk ' + title,
-                      text: 'Entre na minha sala de perguntas.'
-                    }),
-                    {
-                      loading: 'Abrindo share...',
-                      success: 'Compartilhado',
-                      error: 'Error ao compartilhar'
-                    }
-                  )
+        <RoomCode code={roomID} />
+        <Button isOutlined onClick={handleCloseOrOpenRoom}>
+          {!!closedAt ? 'Abrir' : 'Encerrar'} Sala
+        </Button>
+        {navigator.share && (
+          <Button
+            onClick={() =>
+              toast.promise(
+                navigator.share({
+                  url: window.location.href,
+                  title: 'LetMeAsk ' + title,
+                  text: 'Entre na minha sala de perguntas.'
+                }),
+                {
+                  loading: 'Abrindo share...',
+                  success: 'Compartilhado',
+                  error: 'Error ao compartilhar'
                 }
-              >
-                Share
-              </Button>
-            )}
-          </div>
-        </div>
+              )
+            }
+          >
+            Share
+          </Button>
+        )}
       </Header>
 
       <Main>
@@ -244,87 +242,84 @@ export function AdminRoom() {
           </span>
         </RoomTitle>
 
-        <RoomContent className={cx({ 'no-question': questions.length <= 0 })}>
-          {questions.length > 0 ? (
-            <>
-              {questions.map(question => {
-                return (
-                  <Question
-                    key={question.key}
-                    author={question.author}
-                    content={question.content}
-                    isAnswered={question.isAnswered}
-                    isHighlighted={question.isHighlighted}
-                  >
-                    {!question.isAnswered && (
-                      <button
-                        className={cx('like-button', { on: !!question.likeID })}
-                        type="button"
-                        aria-label="Marcar como gostei"
-                        onClick={() =>
-                          handleLikeQuestion(question.key, question.likeID)
-                        }
-                      >
-                        {question.likeCount > 0 && (
-                          <span>{question.likeCount}</span>
-                        )}
-                        <LikeIcon />
-                      </button>
-                    )}
+        {questions.length > 0 ? (
+          <RoomContent>
+            {questions.map(question => {
+              return (
+                <Question
+                  key={question.key}
+                  author={question.author}
+                  content={question.content}
+                  isAnswered={question.isAnswered}
+                  isHighlighted={question.isHighlighted}
+                >
+                  {!question.isAnswered && (
+                    <button
+                      className={cx('like-button', { on: !!question.likeID })}
+                      type="button"
+                      aria-label="Marcar como gostei"
+                      onClick={() =>
+                        handleLikeQuestion(question.key, question.likeID)
+                      }
+                    >
+                      {question.likeCount > 0 && (
+                        <span>{question.likeCount}</span>
+                      )}
+                      <LikeIcon />
+                    </button>
+                  )}
 
+                  <button
+                    type="button"
+                    aria-label={`Marcar pergunta como ${question.isAnswered ? 'não' : ''
+                      }respondida`}
+                    className={cx({ on: !!question.isAnswered })}
+                    onClick={() =>
+                      handleCheckQuestionAsAnswered(
+                        question.key,
+                        question.isAnswered
+                      )
+                    }
+                  >
+                    <CheckIcon />
+                  </button>
+
+                  {!question.isAnswered && (
                     <button
                       type="button"
-                      aria-label={`Marcar pergunta como ${
-                        question.isAnswered ? 'não' : ''
-                      }respondida`}
-                      className={cx({ on: !!question.isAnswered })}
+                      aria-label="Destacar pergunta"
+                      className={cx({ on: !!question.isHighlighted })}
                       onClick={() =>
-                        handleCheckQuestionAsAnswered(
+                        handleHighlightQuestion(
                           question.key,
-                          question.isAnswered
+                          question.isHighlighted
                         )
                       }
                     >
-                      <CheckIcon />
+                      <AnswerIcon />
                     </button>
+                  )}
 
-                    {!question.isAnswered && (
-                      <button
-                        type="button"
-                        aria-label="Destacar pergunta"
-                        className={cx({ on: !!question.isHighlighted })}
-                        onClick={() =>
-                          handleHighlightQuestion(
-                            question.key,
-                            question.isHighlighted
-                          )
-                        }
-                      >
-                        <AnswerIcon />
-                      </button>
-                    )}
-
-                    <button
-                      type="button"
-                      aria-label="Deletar pergunta"
-                      onClick={() => handleDeleteQuestion(question.key)}
-                    >
-                      <CheckIcon />
-                    </button>
-                  </Question>
-                )
-              })}
-            </>
-          ) : (
-            <>
-              <EmptyQuestionsImage />
-              <h2>Nenhuma pergunta por aqui...</h2>
-              <p>
-                Faça o seu login e seja a primeira pessoa a fazer uma pergunta!
-              </p>
-            </>
-          )}
-        </RoomContent>
+                  <button
+                    type="button"
+                    aria-label="Deletar pergunta"
+                    onClick={() => handleDeleteQuestion(question.key)}
+                  >
+                    <DeleteIcon />
+                  </button>
+                </Question>
+              )
+            })}
+          </RoomContent>
+        ) : (
+          <NoQuestions>
+            <EmptyQuestions />
+            <h2>Nenhuma pergunta por aqui...</h2>
+            <p>
+              Compartilhe o código desta sala para seus amigos e comece a responder perguntas!
+            </p>
+          </NoQuestions>
+        )}
       </Main>
     </div>
   )

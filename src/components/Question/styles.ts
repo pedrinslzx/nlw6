@@ -1,7 +1,9 @@
-.question {
-  background: #fefefe;
+import styled from 'styled-components'
+
+export const Container = styled.div`
+  background: ${p => p.theme.$details};
   border-radius: 8px;
-  box-shadow: 0px 2px 12px rgba(0, 0, 0, 0.04);
+  box-shadow: 0px 2px 12px ${p => p.theme.$box_shadow};
   padding: 24px;
 
   & + div {
@@ -9,7 +11,7 @@
   }
 
   > p {
-    color: #29292e;
+    color: ${p => p.theme.$color};
   }
   > footer {
     display: flex;
@@ -30,7 +32,7 @@
 
       span {
         margin-left: 8px;
-        color: #737380;
+        color: ${p => p.theme.$gray_dark};
         font-size: 14px;
       }
     }
@@ -51,15 +53,15 @@
       display: flex;
       align-items: flex-end;
 
-      color: #737380;
+      color: ${p => p.theme.$gray_dark};
 
       transition: filter 0.2s;
 
       &.on {
-        color: #835afd !important;
+        color: ${p => p.theme.$primary};
 
         svg {
-          color: #835afd !important;
+          color: ${p => p.theme.$primary_hover};
         }
       }
 
@@ -82,11 +84,12 @@
   border: 1px solid transparent;
 
   &.answered {
-    background-color: #dbdcdd;
+    user-select: none;
+    opacity: 0.8;
   }
 
   &.highlighted {
-    background-color: #f4f0ff;
-    border-color: #835afd;
+    background-color: ${p => p.theme.$highlight};
+    border-color: ${p => p.theme.$primary};
   }
-}
+`

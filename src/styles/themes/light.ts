@@ -1,29 +1,26 @@
 export const LightTheme = {
   // Default Colors
-  $background_color: '#f8f8f8',
+  $background: '#f8f8f8',
   $color: '#29292E',
-
-  $black: '#29292E',
-
-  $shadow: '#050206',
 
   $primary: '#835afd',
 
   $gradient: 'linear-gradient(139.44deg, #485BFF 0%, #FF59F8 96.19%)',
 
+  $google: '#ea4335',
   $danger: '#E73F5D',
 
   // Modal
-  $modal_overlay_color: 'rgba(5, 2, 6, 0.8)',
+  $overlay_color: 'rgba(5, 2, 6, 0.8)',
 
   $gray_dark: '#737380',
   $gray_medium: '#A8A8B3',
   $gray_light: '#DBDCDD',
 
   // White
-  $white_background: '#F8F8F8',
-  $white_details: '#FEFEFE',
+  $details: '#FEFEFE',
   $white: '#FFFFFF',
+  $black: '#000',
 
   // Pink
   $pink_dark: '#E559F9',
@@ -36,7 +33,7 @@ export const LightTheme = {
   $gray_light_hover: '#CECECE',
 
   // Others Colors
-  $header_border: '#e2e2e2',
-  $shadow_color: 'rgba(0, 0, 0, 0.04)',
-  $shadow_color_hover: 'rgba(0, 0, 0, 0.1)'
+  $highlight: '#e2e2e2',
+  $box_shadow: 'rgba(0, 0, 0, 0.04)',
+  $box_shadow_hover: 'rgba(0, 0, 0, 0.1)'
 }

@@ -8,7 +8,7 @@ import {
 } from 'react'
 import ReactModal from 'react-modal'
 
-import Button, { ButtonColor } from '../components/Button'
+import { Button, ButtonColor } from '../components/Button'
 
 type Icon = React.FunctionComponent<SVGAttributes<SVGElement>>
 

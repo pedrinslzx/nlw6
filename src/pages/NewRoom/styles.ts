@@ -45,7 +45,7 @@ export const SideBar = styled.aside`
     font-weight: 400;
     max-width: 440px;
 
-    color: ${p => p.theme.$background_color};
+    color: ${p => p.theme.$white};
   }
 
   @media (max-width: 800px) {
@@ -73,11 +73,6 @@ export const MainContent = styled.div`
 
   width: 100%;
   max-width: 320px;
-
-  > img {
-    align-self: center;
-    margin-bottom: 32px;
-  }
 `
 
 export const Form = styled.form`
@@ -91,7 +86,7 @@ export const Form = styled.form`
     border-radius: 8px;
     padding: 0 16px;
 
-    background-color: ${p => p.theme.$white};
+    background-color: ${p => p.theme.$background};
 
     border: 1px solid ${p => p.theme.$gray_medium};
   }
@@ -143,4 +138,9 @@ export const Text = styled.p`
   a {
     color: ${p => p.theme.$pink_dark};
   }
+`
+
+export const Logo = styled.div`
+  align-self: center;
+  margin-bottom: 32px;
 `

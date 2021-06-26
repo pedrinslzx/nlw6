@@ -1,7 +1,7 @@
 import { ReactNode } from 'react'
 
 import { cx } from '../../services/utils'
-import './styles.scss'
+import { Container } from './styles'
 
 interface QuestionProps {
   children?: ReactNode
@@ -21,13 +21,13 @@ export function Question({
   isAnswered = false
 }: QuestionProps) {
   return (
-    <div
+    <Container
       className={cx('question', {
         answered: isAnswered,
         highlighted: isHighlighted && !isAnswered
       })}
     >
-      <p> {content}</p>
+      <p>{content}</p>
       <footer>
         <div className={'user_info'}>
           <img src={author.photoURL} alt={author.name} />
@@ -35,6 +35,6 @@ export function Question({
         </div>
         <div className="buttons">{children}</div>
       </footer>
-    </div>
+    </Container>
   )
 }

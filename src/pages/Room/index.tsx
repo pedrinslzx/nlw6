@@ -1,10 +1,11 @@
 import { useCallback } from 'react'
 import { useForm } from 'react-hook-form'
 import { toast } from 'react-hot-toast'
-import { useHistory, useParams } from 'react-router-dom'
+import { useParams } from 'react-router-dom'
 
-import Button from '../../components/Button'
-import { IllustrationImage, LikeIcon, LogoImage } from '../../components/Icons'
+import { Button } from '../../components/Button'
+import { Header } from '../../components/Header'
+import { EmptyQuestions, LikeIcon } from '../../components/Icons'
 import { Question } from '../../components/Question'
 import { RoomCode } from '../../components/RoomCode'
 import { useAuth } from '../../hooks/useAuth'
@@ -13,11 +14,11 @@ import { database } from '../../services/firebase'
 import { cx, formatPlural } from '../../services/utils'
 import {
   FormFooter,
-  Header,
   RoomTitle,
   Main,
   Form,
-  RoomContent
+  RoomContent,
+  NoQuestions
 } from './styles'
 
 interface RoomParams {
@@ -31,7 +32,6 @@ interface RoomFormData {
 export function Room() {
   const params = useParams<RoomParams>()
   const roomID = params.id.trim()
-  const history = useHistory()
   const auth = useAuth()
   const { title, questions, closedAt, handleLikeQuestion } = useRoom({
     roomID,
@@ -45,9 +45,9 @@ export function Room() {
         if (!auth.user) {
           toast.error(t => (
             <span
-              onClick={() => [toast.dismiss(t.id), auth.signInWithGoogle()]}
+              onClick={() => { toast.dismiss(t.id); auth.signInWithGoogle() }}
             >
-              'Você não está logado
+              Você não está logado
             </span>
           ))
           return
@@ -92,11 +92,7 @@ export function Room() {
   return (
     <div>
       <Header>
-        <div className="content">
-          <LogoImage onClick={() => history.push('/my-rooms')} />
-
-          <RoomCode code={roomID} />
-        </div>
+        <RoomCode code={roomID} />
       </Header>
 
       <Main>
@@ -113,8 +109,8 @@ export function Room() {
             placeholder={
               !!closedAt
                 ? `Esta sala foi encerrada em ${new Date(
-                    closedAt
-                  ).toLocaleString()}! Agora você está no modo leitura!`
+                  closedAt
+                ).toLocaleString()}! Agora você está no modo leitura!`
                 : 'Oque você deseja perguntar?'
             }
             disabled={!!closedAt}
@@ -141,47 +137,45 @@ export function Room() {
             </Button>
           </FormFooter>
         </Form>
-        <RoomContent className={cx({ 'no-question': questions.length <= 0 })}>
-          {questions.length > 0 ? (
-            <>
-              {questions.map(question => {
-                return (
-                  <Question
-                    key={question.key}
-                    author={question.author}
-                    content={question.content}
-                    isAnswered={question.isAnswered}
-                    isHighlighted={question.isHighlighted}
-                  >
-                    {!question.isAnswered && (
-                      <button
-                        className={cx('like-button', { on: !!question.likeID })}
-                        type="button"
-                        aria-label="Marcar como gostei"
-                        onClick={() =>
-                          handleLikeQuestion(question.key, question.likeID)
-                        }
-                      >
-                        {question.likeCount > 0 && (
-                          <span>{question.likeCount}</span>
-                        )}
-                        <LikeIcon />
-                      </button>
-                    )}
-                  </Question>
-                )
-              })}
-            </>
-          ) : (
-            <>
-              <IllustrationImage />
-              <h2>Nenhuma pergunta por aqui...</h2>
-              <p>
-                Faça o seu login e seja a primeira pessoa a fazer uma pergunta!
-              </p>
-            </>
-          )}
-        </RoomContent>
+        {questions.length > 0 ? (
+          <RoomContent>
+            {questions.map(question => {
+              return (
+                <Question
+                  key={question.key}
+                  author={question.author}
+                  content={question.content}
+                  isAnswered={question.isAnswered}
+                  isHighlighted={question.isHighlighted}
+                >
+                  {!question.isAnswered && (
+                    <button
+                      className={cx('like-button', { on: !!question.likeID })}
+                      type="button"
+                      aria-label="Marcar como gostei"
+                      onClick={() =>
+                        handleLikeQuestion(question.key, question.likeID)
+                      }
+                    >
+                      {question.likeCount > 0 && (
+                        <span>{question.likeCount}</span>
+                      )}
+                      <LikeIcon />
+                    </button>
+                  )}
+                </Question>
+              )
+            })}
+          </RoomContent>
+        ) : (
+          <NoQuestions>
+            <EmptyQuestions />
+            <h2>Nenhuma pergunta por aqui...</h2>
+            <p>
+              Faça o seu login e seja a primeira pessoa a fazer uma pergunta!
+            </p>
+          </NoQuestions>
+        )}
       </Main>
     </div>
   )

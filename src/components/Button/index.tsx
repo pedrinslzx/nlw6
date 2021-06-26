@@ -1,6 +1,6 @@
 import { ReactNode, ButtonHTMLAttributes, SVGAttributes } from 'react'
 
-import './styles.scss'
+import { CancelButton, DefaultButton, DangerButton, GoogleButton } from './styles'
 
 export type ButtonColor = 'danger' | 'cancel' | 'default' | 'google'
 
@@ -16,28 +16,53 @@ interface ButtonProps
   color?: ButtonColor
 }
 
-function Button({
-  isOutlined = false,
+export function Button({
   children,
   icon: Icon,
-  color,
+  isOutlined = false,
+  color = 'default',
   ...rest
 }: ButtonProps) {
+
+  if (color === 'cancel') {
+    return (
+      <CancelButton
+        className={isOutlined ? 'outlined' : ''}
+        {...rest}
+      >
+        {Icon && <Icon className={'icon'} />}
+        {children}
+      </CancelButton>
+    )
+  } else if (color === 'google') {
+    return (
+      <GoogleButton
+        className={isOutlined ? 'outlined' : ''}
+        {...rest}
+      >
+        {Icon && <Icon className={'icon'} />}
+        {children}
+      </GoogleButton>
+    )
+  } else if (color === 'danger') {
+    return (
+      <DangerButton
+        className={isOutlined ? 'outlined' : ''}
+        {...rest}
+      >
+        {Icon && <Icon className={'icon'} />}
+        {children}
+      </DangerButton>
+    )
+  }
+
   return (
-    <button
-      className={[
-        'button',
-        isOutlined ? 'outline' : '',
-        color ? color : 'default'
-      ].join(' ')}
+    <DefaultButton
+      className={isOutlined ? 'outlined' : ''}
       {...rest}
     >
       {Icon && <Icon className={'icon'} />}
       {children}
-    </button>
+    </DefaultButton>
   )
 }
-
-export { Button }
-
-export default Button

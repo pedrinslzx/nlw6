@@ -3,11 +3,11 @@ import { useForm } from 'react-hook-form'
 import { toast } from 'react-hot-toast'
 import { Link, useHistory } from 'react-router-dom'
 
-import Button from '../../components/Button'
+import { Button } from '../../components/Button'
 import {
-  IllustrationImage,
+  HomeIllustration,
   LoginIcon,
-  LogoImageSrc
+  Logo
 } from '../../components/Icons'
 import { useAuth } from '../../hooks/useAuth'
 import { database, firebase } from '../../services/firebase'
@@ -18,7 +18,8 @@ import {
   MainContent,
   Title,
   Text,
-  SideBar
+  SideBar,
+  Logo as LogoContainer
 } from './styles'
 
 interface NewRoomForm {
@@ -71,13 +72,15 @@ export function NewRoom() {
   return (
     <Container>
       <SideBar>
-        <IllustrationImage />
+        <HomeIllustration />
         <strong>Toda pergunta tem uma resposta.</strong>
         <p>Aprenda e compartilhe conhecimento com outras pessoas</p>
       </SideBar>
       <Main>
         <MainContent>
-          <img src={LogoImageSrc} alt="LetMeAsk" />
+          <LogoContainer>
+            <Logo />
+          </LogoContainer>
           <Title>Criar uma nova sala</Title>
 
           <Form onSubmit={handleSubmit(handleCreateRoom)}>
@@ -96,7 +99,7 @@ export function NewRoom() {
           </Form>
           <Text>
             Quer entrar em uma sala já existente?{' '}
-            <Link to="/">Clique aqui</Link>
+            <Link to="/rooms/enter">Clique aqui</Link>
           </Text>
         </MainContent>
       </Main>

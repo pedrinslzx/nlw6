@@ -11,7 +11,7 @@ export const modal = css`
     width: 100%;
     height: 100%;
 
-    background: ${p => p.theme.$modal_overlay_color};
+    background: ${p => p.theme.$overlay_color};
 
     width: 100%;
     height: 100%;
@@ -38,7 +38,7 @@ export const modal = css`
       max-height: 362px;
       height: 100%;
 
-      background: ${p => p.theme.$background_color};
+      background: ${p => p.theme.$background};
       border-radius: 8px;
       display: flex;
       align-items: center;

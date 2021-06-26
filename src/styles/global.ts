@@ -26,7 +26,7 @@ export const GlobalStyles = createGlobalStyle`
     width: 100vw;
     min-height: 100vh;
 
-    background-color: ${p => p.theme.$background_color};
+    background-color: ${p => p.theme.$background};
     color: ${p => p.theme.$color};
 
     overflow-x: hidden;

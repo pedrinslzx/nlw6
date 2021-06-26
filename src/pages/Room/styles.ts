@@ -2,7 +2,7 @@ import styled from 'styled-components'
 
 export const Header = styled.header`
   padding: 24px;
-  border-bottom: 1px solid ${p => p.theme.$header_border};
+  border-bottom: 1px solid ${p => p.theme.$highlight};
 
   > div {
     max-width: 1120px;
@@ -30,12 +30,12 @@ export const Form = styled.form`
     width: 100%;
     padding: 16px;
 
-    background-color: ${p => p.theme.$white_details};
+    background-color: ${p => p.theme.$details};
 
     border-radius: 8px;
     border: 1px solid transparent;
 
-    box-shadow: 0px 2px 12px ${p => p.theme.$shadow_color};
+    box-shadow: 0px 2px 12px ${p => p.theme.$box_shadow};
     resize: vertical;
 
     transition-property: filter, border-color;
@@ -129,7 +129,7 @@ export const RoomTitle = styled.div`
 
     border-radius: 50px;
 
-    color: ${p => p.theme.$white};
+    color: ${p => p.theme.$background};
 
     font-weight: 500;
 
@@ -140,9 +140,9 @@ export const RoomTitle = styled.div`
 export const RoomContent = styled.div`
   margin-top: 32px;
   padding-bottom: 32px;
-
-  &.no-questions {
-    display: flex;
+`
+export const NoQuestions = styled.div`
+  display: flex;
     flex-direction: column;
 
     align-items: center;
@@ -171,5 +171,4 @@ export const RoomContent = styled.div`
       line-height: 21px;
       color: ${p => p.theme.$gray_dark};
     }
-  }
 `

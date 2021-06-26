@@ -1,15 +1,13 @@
 import { useEffect, useState } from 'react'
-import { toast } from 'react-hot-toast'
 import { useHistory } from 'react-router-dom'
 
-import Button from '../../components/Button'
+import { Button } from '../../components/Button'
+import { Header } from '../../components/Header'
+import { EmptyQuestions } from '../../components/Icons'
 import { useAuth } from '../../hooks/useAuth'
 import { database } from '../../services/firebase'
 import { formatPlural } from '../../services/utils'
-
-import { ReactComponent as LogoImage } from '../../assets/images/logo.svg'
-
-import './styles.scss'
+import { Content, Main, Room } from './styles'
 
 interface AdminRoom {
   key: string
@@ -27,10 +25,9 @@ export function AdminRoomsList() {
     const userRoomRef = database.ref(`user/${auth.user?.uid}/rooms`)
     userRoomRef.on('value', value => {
       if (!value.exists()) {
-        toast.error('Você ainda não tem salas criadas, crie uma para começar!')
-        history.push('/rooms/new')
+        setRooms([])
+        return
       }
-
       const rooms = Object.entries<Omit<AdminRoom, 'key'>>(value.val()).map(
         ([key, value]) => ({
           key,
@@ -46,29 +43,29 @@ export function AdminRoomsList() {
   }, [auth.user?.uid, history])
 
   return (
-    <div id="admin-room-list">
-      <header className="header">
-        <div className="content">
-          <LogoImage onClick={() => history.push('/my-rooms/')} />
+    <div>
+      <Header>
+        <Button onClick={() => history.push('/rooms/new')}>
+          Criar Sala
+        </Button>
+        <Button onClick={() => history.push('/rooms/enter')}>
+          Entrar em uma Sala
+        </Button>
 
-          <div>
-            <Button onClick={() => history.push('/rooms/new')}>
-              Criar Sala
-            </Button>
-          </div>
-        </div>
-      </header>
-      <main>
+        <Button color="danger" onClick={() => auth.logout()}>
+          Sair
+        </Button>
+      </Header>
+      <Main>
         <div className="room-title">
           <h1>Suas Salas</h1>
           <span>
             {rooms.length || 0} sala{formatPlural(rooms.length || 0)}
           </span>
         </div>
-        {rooms.map(room => {
+        {rooms.length > 0 ? rooms.map(room => {
           return (
-            <div
-              className="room"
+            <Room
               onClick={() => history.push(`/my-rooms/${room.key}`)}
             >
               <p>
@@ -91,10 +88,18 @@ export function AdminRoomsList() {
                   </span>
                 )}
               </footer>
-            </div>
+            </Room>
           )
-        })}
-      </main>
+        }) : (
+          <Content>
+            <EmptyQuestions />
+            <h2>Nenhuma sala por aqui...</h2>
+            <p>
+              Crie uma sala de perguntas e ela irá aparecer aqui.
+            </p>
+          </Content>
+        )}
+      </Main>
     </div>
   )
 }

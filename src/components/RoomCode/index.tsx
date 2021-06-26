@@ -1,10 +1,9 @@
 import { useCallback, useState } from 'react'
 import { toast } from 'react-hot-toast'
 
-import styles from './styles.module.scss'
+import { Container, Icon, Text } from './styles'
 
-import { ReactComponent as CheckImage } from '../../assets/images/check-white.svg'
-import { ReactComponent as CopyImage } from '../../assets/images/copy.svg'
+import { CheckIcon, CopyIcon } from '../Icons'
 
 interface RoomCodeProps {
   code: string
@@ -28,9 +27,9 @@ export function RoomCode({ code }: RoomCodeProps) {
     [code]
   )
   return (
-    <button className={styles.container} onClick={copyRoomCode}>
-      <div className={styles.icon}>{copy ? <CheckImage /> : <CopyImage />}</div>
-      <span className={styles.text}>#{code}</span>
-    </button>
+    <Container onClick={copyRoomCode}>
+      <Icon>{copy ? <CheckIcon /> : <CopyIcon />}</Icon>
+      <Text>#{code}</Text>
+    </Container>
   )
 }
