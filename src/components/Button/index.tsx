@@ -1,6 +1,11 @@
 import { ReactNode, ButtonHTMLAttributes, SVGAttributes } from 'react'
 
-import { CancelButton, DefaultButton, DangerButton, GoogleButton } from './styles'
+import {
+  CancelButton,
+  DefaultButton,
+  DangerButton,
+  GoogleButton
+} from './styles'
 
 export type ButtonColor = 'danger' | 'cancel' | 'default' | 'google'
 
@@ -23,33 +28,23 @@ export function Button({
   color = 'default',
   ...rest
 }: ButtonProps) {
-
   if (color === 'cancel') {
     return (
-      <CancelButton
-        className={isOutlined ? 'outlined' : ''}
-        {...rest}
-      >
+      <CancelButton className={isOutlined ? 'outlined' : ''} {...rest}>
         {Icon && <Icon className={'icon'} />}
         {children}
       </CancelButton>
     )
   } else if (color === 'google') {
     return (
-      <GoogleButton
-        className={isOutlined ? 'outlined' : ''}
-        {...rest}
-      >
+      <GoogleButton className={isOutlined ? 'outlined' : ''} {...rest}>
         {Icon && <Icon className={'icon'} />}
         {children}
       </GoogleButton>
     )
   } else if (color === 'danger') {
     return (
-      <DangerButton
-        className={isOutlined ? 'outlined' : ''}
-        {...rest}
-      >
+      <DangerButton className={isOutlined ? 'outlined' : ''} {...rest}>
         {Icon && <Icon className={'icon'} />}
         {children}
       </DangerButton>
@@ -57,10 +52,7 @@ export function Button({
   }
 
   return (
-    <DefaultButton
-      className={isOutlined ? 'outlined' : ''}
-      {...rest}
-    >
+    <DefaultButton className={isOutlined ? 'outlined' : ''} {...rest}>
       {Icon && <Icon className={'icon'} />}
       {children}
     </DefaultButton>

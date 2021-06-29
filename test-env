@@ -1,0 +1,29 @@
+const dotenv = require("dotenv")
+const path = require("path")
+const fs = require("fs")
+
+const dotEnvFileExamplePath = path.resolve(__dirname, '.env.local.example')
+const dotEnvFilePath = path.resolve(__dirname, '.env.local')
+
+if (!fs.existsSync(dotEnvFilePath)) {
+  console.error(`.env.local not exists`)
+  process.exit(1)
+}
+
+const dotEnvFileExample = fs.readFileSync(dotEnvFileExamplePath)
+const dotEnvFile = fs.readFileSync(dotEnvFilePath)
+
+const dotEnvFileExampleParsed = dotenv.parse(dotEnvFileExample)
+const dotEnvFileParsed = dotenv.parse(dotEnvFile)
+
+for (const enviromentVariableName in dotEnvFileExampleParsed) {
+  if (Object.hasOwnProperty.call(dotEnvFileExampleParsed, enviromentVariableName)) {
+    const inLocalEnvFile = dotEnvFileParsed[enviromentVariableName];
+    const inLocalEnviroment = process.env[enviromentVariableName];
+    if (!inLocalEnvFile && !inLocalEnviroment) {
+      console.error(`${enviromentVariableName} is not defined in .env.local or in your Enviroment`)
+      process.exit(1)
+    }
+  }
+}
+process.exit(0)

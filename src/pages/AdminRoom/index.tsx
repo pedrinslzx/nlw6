@@ -271,8 +271,9 @@ export function AdminRoom() {
 
                   <button
                     type="button"
-                    aria-label={`Marcar pergunta como ${question.isAnswered ? 'não' : ''
-                      }respondida`}
+                    aria-label={`Marcar pergunta como ${
+                      question.isAnswered ? 'não' : ''
+                    }respondida`}
                     className={cx({ on: !!question.isAnswered })}
                     onClick={() =>
                       handleCheckQuestionAsAnswered(
@@ -316,7 +317,8 @@ export function AdminRoom() {
             <EmptyQuestions />
             <h2>Nenhuma pergunta por aqui...</h2>
             <p>
-              Compartilhe o código desta sala para seus amigos e comece a responder perguntas!
+              Compartilhe o código desta sala para seus amigos e comece a
+              responder perguntas!
             </p>
           </NoQuestions>
         )}

@@ -10,13 +10,9 @@ type LogoProps = ImgHTMLAttributes<HTMLImageElement>
 export function Logo(props: LogoProps) {
   const theme = useContext(ThemeContext)
   if (theme.currentTheme === 'dark') {
-    return (
-      <img src={LogoIconDark} alt="LetMeAsk" {...props} />
-    )
+    return <img src={LogoIconDark} alt="LetMeAsk" {...props} />
   } else {
-    return (
-      <img src={LogoIconLight} alt="LetMeAsk" {...props} />
-    )
+    return <img src={LogoIconLight} alt="LetMeAsk" {...props} />
   }
 }
 

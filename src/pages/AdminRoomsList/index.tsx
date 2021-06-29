@@ -45,9 +45,7 @@ export function AdminRoomsList() {
   return (
     <div>
       <Header>
-        <Button onClick={() => history.push('/rooms/new')}>
-          Criar Sala
-        </Button>
+        <Button onClick={() => history.push('/rooms/new')}>Criar Sala</Button>
         <Button onClick={() => history.push('/rooms/enter')}>
           Entrar em uma Sala
         </Button>
@@ -68,6 +66,7 @@ export function AdminRoomsList() {
             {rooms.map(room => {
               return (
                 <Room
+                  key={room.key}
                   onClick={() => history.push(`/my-rooms/${room.key}`)}
                 >
                   <p>
@@ -98,9 +97,7 @@ export function AdminRoomsList() {
           <Content>
             <EmptyQuestions />
             <h2>Nenhuma sala por aqui...</h2>
-            <p>
-              Crie uma sala de perguntas e ela irá aparecer aqui.
-            </p>
+            <p>Crie uma sala de perguntas e ela irá aparecer aqui.</p>
           </Content>
         )}
       </Main>

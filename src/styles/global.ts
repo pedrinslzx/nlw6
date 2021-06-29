@@ -41,5 +41,15 @@ export const GlobalStyles = createGlobalStyle`
     overflow-x: hidden;
   }
 
+  ::-webkit-scrollbar {
+    width: 0.8rem;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: ${p => p.theme.$gray_medium};
+    &:hover {
+      background: ${p => p.theme.$gray_medium_hover};
+    }
+  }
+
   ${modal}
 `

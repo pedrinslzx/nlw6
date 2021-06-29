@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import styled from 'styled-components'
 
 export const DefaultButton = styled.button`
   height: 50px;
@@ -100,7 +100,7 @@ export const CancelButton = styled.button`
   font-weight: 500;
 
   border: none;
-  background-color:${p => p.theme.$gray_medium};
+  background-color: ${p => p.theme.$gray_medium};
   color: ${p => p.theme.$white};
 
   cursor: pointer;
@@ -120,9 +120,9 @@ export const CancelButton = styled.button`
   }
 
   &.outlined {
-    border: 1px solid${p => p.theme.$gray_medium};
+    border: 1px solid ${p => p.theme.$gray_medium};
     background-color: ${p => p.theme.$gray_light};
-    color:${p => p.theme.$gray_medium};
+    color: ${p => p.theme.$gray_medium};
   }
 `
 
@@ -142,7 +142,7 @@ export const GoogleButton = styled.button`
   font-weight: 500;
 
   border: none;
-  background-color:${p => p.theme.$google};
+  background-color: ${p => p.theme.$google};
   color: ${p => p.theme.$white};
 
   cursor: pointer;
@@ -162,8 +162,8 @@ export const GoogleButton = styled.button`
   }
 
   &.outlined {
-    border: 1px solid${p => p.theme.$google};
+    border: 1px solid ${p => p.theme.$google};
     background-color: ${p => p.theme.$background};
-    color:${p => p.theme.$google};
+    color: ${p => p.theme.$google};
   }
 `

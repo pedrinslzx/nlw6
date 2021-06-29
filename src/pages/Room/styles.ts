@@ -141,33 +141,33 @@ export const RoomContent = styled.div`
   padding-bottom: 32px;
 `
 export const NoQuestions = styled(RoomContent)`
-display: flex;
-    flex-direction: column;
+  display: flex;
+  flex-direction: column;
 
-    align-items: center;
-    justify-content: center;
-    text-align: center;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
 
-    svg {
-      margin-bottom: 16px;
-    }
+  svg {
+    margin-bottom: 16px;
+  }
 
-    h2 {
-      margin-bottom: 8px;
+  h2 {
+    margin-bottom: 8px;
 
-      font-family: Poppins;
-      font-weight: 600;
-      font-size: 18px;
+    font-family: Poppins;
+    font-weight: 600;
+    font-size: 18px;
 
-      color: ${p => p.theme.$color};
-      font-weight: 600;
-    }
+    color: ${p => p.theme.$color};
+    font-weight: 600;
+  }
 
-    p {
-      max-width: 300px;
+  p {
+    max-width: 300px;
 
-      font-size: 14px;
-      line-height: 21px;
-      color: ${p => p.theme.$gray_dark};
-    }
+    font-size: 14px;
+    line-height: 21px;
+    color: ${p => p.theme.$gray_dark};
+  }
 `

@@ -4,11 +4,7 @@ import { toast } from 'react-hot-toast'
 import { Link, useHistory } from 'react-router-dom'
 
 import { Button } from '../../components/Button'
-import {
-  HomeIllustration,
-  LoginIcon,
-  Logo
-} from '../../components/Icons'
+import { HomeIllustration, LoginIcon, Logo } from '../../components/Icons'
 import { useAuth } from '../../hooks/useAuth'
 import { database, firebase } from '../../services/firebase'
 import {

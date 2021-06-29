@@ -1,75 +1,75 @@
-import styled from "styled-components";
+import styled from 'styled-components'
 
 export const Header = styled.header`
   padding: 24px;
-    border-bottom: 1px solid ${p => p.theme.$highlight};
+  border-bottom: 1px solid ${p => p.theme.$highlight};
+
+  > div {
+    max-width: 1120px;
+
+    margin: 0 auto;
+
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    > svg {
+      cursor: pointer;
+    }
 
     > div {
-      max-width: 1120px;
-
-      margin: 0 auto;
-
       display: flex;
-      justify-content: space-between;
-      align-items: center;
 
-      > svg {
-        cursor: pointer;
+      button {
+        height: 40px;
       }
 
-      > div {
-        display: flex;
-
-        button {
-          height: 40px;
-        }
-
-        button + button {
-          margin-left: 16px;
-        }
+      button + button {
+        margin-left: 16px;
       }
     }
+  }
 `
 
 export const Main = styled.main`
   max-width: 800px;
   flex: 1;
-    margin: 0 auto;
-    padding: 0 32px;
+  margin: 0 auto;
+  padding: 0 32px;
 
-    .room-title {
-      margin: 32px 0 24px;
+  .room-title {
+    margin: 32px 0 24px;
 
-      display: flex;
-      align-items: center;
-      flex-direction: row;
+    display: flex;
+    align-items: center;
+    flex-direction: row;
 
-      > h1 {
-        font-family: Poppins, sans-serif;
+    > h1 {
+      font-family: Poppins, sans-serif;
 
-        font-family: Poppins;
-        font-weight: 700;
-        font-size: 24px;
-        line-height: 36px;
+      font-family: Poppins;
+      font-weight: 700;
+      font-size: 24px;
+      line-height: 36px;
 
-        color: ${p => p.theme.$color};
-      }
-
-      > span {
-        margin-left: 16px;
-        background-color: ${p => p.theme.$pink_dark};
-
-        padding: 8px 16px;
-
-        border-radius: 50px;
-
-        color: ${p => p.theme.$background};
-
-        font-weight: 500;
-
-        font-size: 14px;
-      }
+      color: ${p => p.theme.$color};
     }
+
+    > span {
+      margin-left: 16px;
+      background-color: ${p => p.theme.$pink_dark};
+
+      padding: 8px 16px;
+
+      border-radius: 50px;
+
+      color: ${p => p.theme.$background};
+
+      font-weight: 500;
+
+      font-size: 14px;
+    }
+  }
 `
 
 export const Room = styled.div`

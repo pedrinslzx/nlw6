@@ -1,4 +1,5 @@
-import { css } from 'styled-components'
+import { FaArrowLeft } from 'react-icons/fa'
+import styled, { css } from 'styled-components'
 
 export const modal = css`
   .modal-overlay {
@@ -74,12 +75,12 @@ export const modal = css`
         > button {
           min-width: 160px;
         }
-        @media(max-width:400px){
+        @media (max-width: 400px) {
           flex-direction: column;
 
           width: 100%;
           > .button,
-        > button {
+          > button {
             width: 100%;
           }
         }
@@ -98,4 +99,10 @@ export const modal = css`
       }
     }
   }
+`
+
+export const BackArrow = styled(FaArrowLeft)`
+  position: absolute;
+  top: 25px;
+  left: 25px;
 `

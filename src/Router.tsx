@@ -9,25 +9,27 @@ import { Room } from './pages/Room'
 
 export function Routes() {
   return (
-    <Switch>
-      <Route path="/" exact>
-        <Home />
-      </Route>
-      <Route path="/rooms/new">
-        <NewRoom />
-      </Route>
-      <Route path="/rooms/enter">
-        <EnterRoom />
-      </Route>
-      <Route path="/rooms/:id">
-        <Room />
-      </Route>
-      <Route path="/my-rooms/:id">
-        <AdminRoom />
-      </Route>
-      <Route path="/my-rooms/">
-        <AdminRoomsList />
-      </Route>
-    </Switch>
+    <>
+      <Switch>
+        <Route path="/" exact>
+          <Home />
+        </Route>
+        <Route path="/rooms/new">
+          <NewRoom />
+        </Route>
+        <Route path="/rooms/enter">
+          <EnterRoom />
+        </Route>
+        <Route path="/rooms/:id">
+          <Room />
+        </Route>
+        <Route path="/my-rooms/:id">
+          <AdminRoom />
+        </Route>
+        <Route path="/my-rooms/">
+          <AdminRoomsList />
+        </Route>
+      </Switch>
+    </>
   )
 }

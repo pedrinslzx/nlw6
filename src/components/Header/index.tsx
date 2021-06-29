@@ -1,17 +1,18 @@
-import { ReactNode } from 'react';
-import { useHistory } from 'react-router-dom';
+import { ReactNode } from 'react'
+import { HiHome, HiMenu } from 'react-icons/hi'
+import { useHistory } from 'react-router-dom'
 
-import { Container, Content, Buttons } from './styles';
+import { Container, Content } from './styles'
 
-import { Logo } from '../Icons';
-
+import { DropdownMenu, NavBar, NavBarItem } from '../Dropdown'
+import { Logo } from '../Icons'
 
 interface HeaderProps {
   isDashboard?: boolean
   children: ReactNode
 }
 
-export function Header({ isDashboard, children }: HeaderProps) {
+export function Header({ isDashboard }: HeaderProps) {
   const history = useHistory()
 
   return (
@@ -19,10 +20,14 @@ export function Header({ isDashboard, children }: HeaderProps) {
       <Content>
         <Logo onClick={() => history.push(isDashboard ? '/' : '/my-rooms')} />
 
-        <Buttons>
-          {children}
-        </Buttons>
+        <NavBar>
+          <NavBarItem onClick={() => history.push('/')} icon={<HiHome />} />
+
+          <NavBarItem icon={<HiMenu />}>
+            <DropdownMenu></DropdownMenu>
+          </NavBarItem>
+        </NavBar>
       </Content>
     </Container>
-  );
-};
+  )
+}

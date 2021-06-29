@@ -4,11 +4,7 @@ import { toast } from 'react-hot-toast'
 import { Link, useHistory } from 'react-router-dom'
 
 import { Button } from '../../components/Button'
-import {
-  HomeIllustration,
-  LoginIcon,
-  Logo
-} from '../../components/Icons'
+import { HomeIllustration, LoginIcon, Logo } from '../../components/Icons'
 import { useAuth } from '../../hooks/useAuth'
 import { database } from '../../services/firebase'
 import {
@@ -90,10 +86,19 @@ export function EnterRoom() {
           </Form>
           <Text>
             Quer criar uma sala?{' '}
-            {!!auth.user
-              ? <Link to="/rooms/new">Clique aqui</Link>
-              : <Link to="/rooms/new" onClick={e => { e.preventDefault(); handleLogin() }}>Fazer Login</Link>
-            }
+            {!!auth.user ? (
+              <Link to="/rooms/new">Clique aqui</Link>
+            ) : (
+              <Link
+                to="/rooms/new"
+                onClick={e => {
+                  e.preventDefault()
+                  handleLogin()
+                }}
+              >
+                Fazer Login
+              </Link>
+            )}
           </Text>
         </MainContent>
       </Main>

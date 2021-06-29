@@ -45,7 +45,10 @@ export function Room() {
         if (!auth.user) {
           toast.error(t => (
             <span
-              onClick={() => { toast.dismiss(t.id); auth.signInWithGoogle() }}
+              onClick={() => {
+                toast.dismiss(t.id)
+                auth.signInWithGoogle()
+              }}
             >
               Você não está logado
             </span>
@@ -109,8 +112,8 @@ export function Room() {
             placeholder={
               !!closedAt
                 ? `Esta sala foi encerrada em ${new Date(
-                  closedAt
-                ).toLocaleString()}! Agora você está no modo leitura!`
+                    closedAt
+                  ).toLocaleString()}! Agora você está no modo leitura!`
                 : 'Oque você deseja perguntar?'
             }
             disabled={!!closedAt}

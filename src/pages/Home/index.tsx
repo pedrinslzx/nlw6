@@ -19,7 +19,6 @@ import {
   Logo as LogoContainer
 } from './styles'
 
-
 export function Home() {
   const history = useHistory()
   const auth = useAuth()
@@ -52,7 +51,11 @@ export function Home() {
             Entrar com o Google
           </Button>
           <Separator>Ou</Separator>
-          <Button alt="Entrar" onClick={() => history.push('/rooms/enter')} icon={LoginIcon}>
+          <Button
+            alt="Entrar"
+            onClick={() => history.push('/rooms/enter')}
+            icon={LoginIcon}
+          >
             Entrar em uma sala
           </Button>
         </MainContent>
